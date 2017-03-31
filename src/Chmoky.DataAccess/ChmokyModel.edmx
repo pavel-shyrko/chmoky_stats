@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ChmokyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Messages">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" Nullable="false" />
+          <Property Name="author" Type="nvarchar(max)" />
+          <Property Name="from_dispname" Type="nvarchar(max)" />
+          <Property Name="timestamp" Type="datetime" />
+          <Property Name="edited_by" Type="nvarchar(max)" />
+          <Property Name="edited_timestamp" Type="datetime" />
+          <Property Name="type" Type="int" />
+          <Property Name="body_xml" Type="nvarchar(max)" />
+          <Property Name="identities" Type="nvarchar(max)" />
+        </EntityType>
+        <Function Name="GetDaylightStandardDateTime" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="datetime">
+          <Parameter Name="Year" Type="int" Mode="In" />
+          <Parameter Name="Month" Type="int" Mode="In" />
+          <Parameter Name="DayOfWeek" Type="smallint" Mode="In" />
+          <Parameter Name="Week" Type="smallint" Mode="In" />
+          <Parameter Name="Hour" Type="smallint" Mode="In" />
+        </Function>
+        <Function Name="GetLocalDateTime" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="datetime">
+          <Parameter Name="UTCDate" Type="datetime" Mode="In" />
+          <Parameter Name="TimeZoneID" Type="smallint" Mode="In" />
+        </Function>
+        <Function Name="SelectMessagesByAthor" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="author" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="startdate" Type="datetime" Mode="In" />
+          <Parameter Name="enddate" Type="datetime" Mode="In" />
+        </Function>
+        <EntityContainer Name="ChmokyModelStoreContainer">
+          <EntitySet Name="Messages" EntityType="Self.Messages" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ChmokyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Message">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" />
+          <Property Name="author" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="from_dispname" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="timestamp" Type="DateTime" Precision="3" />
+          <Property Name="edited_by" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="edited_timestamp" Type="DateTime" Precision="3" />
+          <Property Name="type" Type="Int32" />
+          <Property Name="body_xml" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="identities" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityContainer Name="ChmokyEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Messages" EntityType="Self.Message" />
+          <FunctionImport Name="SelectMessagesByAthor" ReturnType="Collection(ChmokyModel.SelectMessagesByAthor_Result)">
+            <Parameter Name="author" Mode="In" Type="String" />
+            <Parameter Name="startdate" Mode="In" Type="DateTime" />
+            <Parameter Name="enddate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="SelectMessagesByAthor_Result">
+          <Property Type="Int64" Name="id" Nullable="false" />
+          <Property Type="String" Name="author" Nullable="true" />
+          <Property Type="String" Name="from_dispname" Nullable="true" />
+          <Property Type="DateTime" Name="timestamp" Nullable="true" Precision="23" />
+          <Property Type="String" Name="edited_by" Nullable="true" />
+          <Property Type="DateTime" Name="edited_timestamp" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="type" Nullable="true" />
+          <Property Type="String" Name="body_xml" Nullable="true" />
+          <Property Type="String" Name="identities" Nullable="true" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ChmokyModelStoreContainer" CdmEntityContainer="ChmokyEntities">
+          <EntitySetMapping Name="Messages">
+            <EntityTypeMapping TypeName="ChmokyModel.Message">
+              <MappingFragment StoreEntitySet="Messages">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="author" ColumnName="author" />
+                <ScalarProperty Name="from_dispname" ColumnName="from_dispname" />
+                <ScalarProperty Name="timestamp" ColumnName="timestamp" />
+                <ScalarProperty Name="edited_by" ColumnName="edited_by" />
+                <ScalarProperty Name="edited_timestamp" ColumnName="edited_timestamp" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="body_xml" ColumnName="body_xml" />
+                <ScalarProperty Name="identities" ColumnName="identities" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SelectMessagesByAthor" FunctionName="ChmokyModel.Store.SelectMessagesByAthor">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ChmokyModel.SelectMessagesByAthor_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="author" ColumnName="author" />
+                <ScalarProperty Name="from_dispname" ColumnName="from_dispname" />
+                <ScalarProperty Name="timestamp" ColumnName="timestamp" />
+                <ScalarProperty Name="edited_by" ColumnName="edited_by" />
+                <ScalarProperty Name="edited_timestamp" ColumnName="edited_timestamp" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="body_xml" ColumnName="body_xml" />
+                <ScalarProperty Name="identities" ColumnName="identities" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
