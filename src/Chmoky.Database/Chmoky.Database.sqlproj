@@ -63,6 +63,9 @@
     <Folder Include="dbo\Stored Procedures\" />
     <Folder Include="Scripts" />
     <Folder Include="Scripts\PostDeployment" />
+    <Folder Include="Scripts\Skype" />
+    <Folder Include="dbo\Views\" />
+    <Folder Include="Storage\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Messages.sql" />
@@ -72,5 +75,17 @@
     <None Include="Scripts\PostDeployment\TimeZoneInfo.sql" />
     <PostDeploy Include="Scripts\PostDeployment.sql" />
     <Build Include="dbo\Tables\TimeZoneInfo.sql" />
+    <None Include="Scripts\Skype\SelectRecordsForInsert.sql" />
+    <Build Include="dbo\Views\vAuthors.sql" />
+    <Build Include="dbo\Views\vAuthorDisplayNames.sql" />
+    <Build Include="dbo\Views\vAuthorNames.sql" />
+    <Build Include="dbo\Stored Procedures\SelectMessagesCountByMonth.sql" />
+    <Build Include="dbo\Views\vNormalizedMessages.sql" />
+    <Build Include="Storage\MessagesCat.sql" />
+    <Build Include="FullTextIndexes.sql" />
+    <Build Include="dbo\Functions\RemoveTagKeepInnerText.sql" />
+    <Build Include="dbo\Functions\RemoveTag.sql" />
+    <Build Include="dbo\Functions\HasTag.sql" />
+    <Build Include="dbo\Functions\NormalizeString.sql" />
   </ItemGroup>
 </Project>

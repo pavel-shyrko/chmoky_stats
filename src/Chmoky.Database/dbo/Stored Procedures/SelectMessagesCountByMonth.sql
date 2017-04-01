@@ -1,11 +1,9 @@
 ﻿
-
 -- =============================================
 -- Author:		P.Shyrko
 -- Create date: 2017-03-31
 -- =============================================
-CREATE PROCEDURE [dbo].[SelectMessagesByAthor]
-	@author nvarchar(max),
+CREATE PROCEDURE [dbo].[SelectMessagesCountByMonth]
 	@startdate datetime,
 	@enddate datetime,
 	@Page int,
@@ -23,23 +21,17 @@ BEGIN
 	DECLARE @OffSet int = (@Page - 1) * @PageSize
 
 	SELECT 
-		[id]
-		,[author]
-		,[from_dispname]
-		,[timestamp]
-		,[edited_by]
-		,[edited_timestamp]
-		,[type]
-		,[body_xml]
-		,[identities]
+		 [author]
+		,COUNT([id]) AS [Count]
+		,MIN(LEN([body_xml])) AS [MinLength]
+		,MAX(LEN([body_xml])) AS [MaxLength]
 	FROM 
 		[dbo].[Messages]
 	WHERE
-		[author] LIKE @author
+		[body_xml] IS NOT NULL 
+		AND [body_xml] <> ''
 		AND (@startdate IS NULL OR [timestamp] >= @startdate)
-		AND (@enddate IS NULL OR [timestamp] <= @enddate)
-	ORDER BY [timestamp]
-	OFFSET @OffSet ROWS
-	FETCH NEXT @PageSize ROWS ONLY
+		AND (@enddate IS NULL OR [timestamp] < @enddate)
+	GROUP BY [author]
 
 END
