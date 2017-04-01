@@ -1,5 +1,6 @@
 ﻿
 
+
 -- =============================================
 -- Author:		P.Shyrko
 -- Create date: 2017-03-31
@@ -22,18 +23,20 @@ BEGIN
 	-- please check this article https://sqlperformance.com/2012/08/t-sql-queries/conditional-order-by
 	DECLARE @OffSet int = (@Page - 1) * @PageSize
 
-	SELECT 
-		[id]
-		,[author]
-		,[from_dispname]
-		,[timestamp]
-		,[edited_by]
-		,[edited_timestamp]
-		,[type]
-		,[body_xml]
-		,[identities]
-	FROM 
-		[dbo].[Messages]
+	SELECT
+	   [id]
+      ,[author]
+      ,[from_dispname]
+      ,[timestamp]
+      ,[edited_by]
+      ,[edited_timestamp]
+      ,[type]
+      ,[identities]
+      ,[original]
+      ,[just_text]
+      ,[len_original]
+      ,[len_just_text]
+	FROM.[dbo].[vNormalizedMessages]
 	WHERE
 		[author] LIKE @author
 		AND (@startdate IS NULL OR [timestamp] >= @startdate)

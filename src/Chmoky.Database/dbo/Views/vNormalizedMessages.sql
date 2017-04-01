@@ -1,15 +1,7 @@
 ﻿
 
-
-
-
-
-
-
-
-
 CREATE VIEW [dbo].[vNormalizedMessages]
---WITH SCHEMABINDING 
+WITH SCHEMABINDING 
 AS
 
 	SELECT
@@ -20,14 +12,23 @@ AS
       ,[edited_by]
       ,[edited_timestamp]
       ,[type]
-      ,[body_xml]
-      ,[identities]
-	  ,[dbo].[RemoveTagKeepInnerText]([dbo].[NormalizeString]([body_xml]), N'quote') AS [body_xml_wo_tags]
-	  ,[dbo].[RemoveTag]([dbo].[NormalizeString]([body_xml]), 'quote') AS [body_xml_wo_tags_wo_qoute]
-	  ,[dbo].HasTag([body_xml], 'a') AS [has_link]
-	  ,[dbo].HasTag([body_xml], 'quote') AS [has_quote]
-	  ,[dbo].HasTag([body_xml], 'URIObject') AS [has_uriobject]
-	  ,LEN([body_xml]) AS [body_xml_len]
-	  ,LEN([dbo].[RemoveTagKeepInnerText]([dbo].[NormalizeString]([body_xml]), N'quote')) AS [body_xml_wo_tags_len]
-	  ,LEN([dbo].[RemoveTag]([dbo].[NormalizeString]([body_xml]), 'quote')) AS [body_xml_wo_tags_wo_qoute_len]
+	  ,[identities]
+      ,[body_xml] as [original]
+      ,[dbo].[NormalizeString]([body_xml]) AS [just_text]
+	  ,LEN([body_xml]) as [len_original]
+      ,LEN([dbo].[NormalizeString]([body_xml])) AS [len_just_text]
+	  --,[dbo].HasTag([body_xml], 'a') AS [has_link]
+	  --,[dbo].HasTag([body_xml], 'quote') AS [has_quote]
+	  --,[dbo].HasTag([body_xml], 'URIObject') AS [has_uriobject]
+	  --,LEN([body_xml]) AS [original_len]
+	  --,LEN([dbo].[RemoveTagKeepInnerText]([dbo].[NormalizeString]([body_xml]), N'quote')) AS [just_text_len]
 	FROM [dbo].[Messages]
+GO
+CREATE UNIQUE CLUSTERED INDEX [vNormalizedMessages_id]
+    ON [dbo].[vNormalizedMessages]([id] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [vNormalizedMessages_timestamp]
+    ON [dbo].[vNormalizedMessages]([timestamp] ASC);
+

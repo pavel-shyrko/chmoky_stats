@@ -1,7 +1,4 @@
 ﻿
-
-
-
 ---------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------
@@ -11,7 +8,7 @@ CREATE FUNCTION [dbo].[RemoveTagKeepInnerText]
 	@Tag         NVARCHAR(100)
 )
 
-RETURNS NVARCHAR(MAX)
+RETURNS NVARCHAR(MAX) WITH SCHEMABINDING
 AS
 BEGIN
 
@@ -27,10 +24,8 @@ BEGIN
 		DECLARE @EndOfQuote INT      = CHARINDEX(N'>', @InputString, @StartOfQuote) + 1
 		DECLARE @Quote NVARCHAR(MAX) = SUBSTRING(@InputString, @StartOfQuote, @EndOfQuote - @StartOfQuote)
 
-		SET @Result = REPLACE(@InputString, @Quote, '')
+		SET @Result = STUFF(@Result, CHARINDEX(@Quote, @Result), LEN(@Quote), N'')
 		SET @Result = STUFF(@Result, CHARINDEX(@CloseTag, @Result), LEN(@CloseTag), N'')
-
-		SET @Result = [dbo].[RemoveTagKeepInnerText] (@Result, @Tag)
 
 	END
 

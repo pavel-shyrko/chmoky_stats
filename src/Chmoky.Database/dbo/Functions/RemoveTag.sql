@@ -2,6 +2,7 @@
 
 
 
+
 ---------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------
@@ -11,7 +12,7 @@ CREATE FUNCTION [dbo].[RemoveTag]
 	@Tag         NVARCHAR(100)
 )
 
-RETURNS NVARCHAR(MAX)
+RETURNS NVARCHAR(MAX) WITH SCHEMABINDING
 AS
 BEGIN
 
@@ -29,7 +30,7 @@ BEGIN
 
 		SET @Result = REPLACE(@InputString, @Quote, '')
 
-		SET @Result = [dbo].[RemoveTag] (@Result, @Tag)
+		--SET @Result = [dbo].[RemoveTag] (@Result, @Tag)
 
 	END
 
