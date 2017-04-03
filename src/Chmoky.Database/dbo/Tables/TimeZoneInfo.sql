@@ -12,6 +12,8 @@
     [DltDayOfWeek] SMALLINT       NOT NULL,
     [DltWeek]      SMALLINT       NOT NULL,
     [DltHour]      SMALLINT       NOT NULL,
-    CONSTRAINT [PK_tbTimeZoneInfo] PRIMARY KEY CLUSTERED ([TimeZoneID] ASC)
+    CONSTRAINT [PK_TimeZoneInfo] PRIMARY KEY CLUSTERED ([TimeZoneID] ASC)
 );
+
+
 

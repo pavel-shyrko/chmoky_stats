@@ -6,6 +6,8 @@
     [CompanyDepartment] NVARCHAR (100) NULL,
     [JobTitle]          NVARCHAR (255) NULL,
     [MobilePhone]       NVARCHAR (255) NULL,
-    PRIMARY KEY CLUSTERED ([author] ASC)
+    CONSTRAINT [PK_SkypeUsers] PRIMARY KEY CLUSTERED ([author] ASC)
 );
+
+
 

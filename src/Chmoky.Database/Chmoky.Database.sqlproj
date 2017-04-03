@@ -71,7 +71,6 @@
     <Build Include="dbo\Tables\Messages.sql" />
     <Build Include="dbo\Functions\GetLocalDateTime.sql" />
     <Build Include="dbo\Functions\GetDaylightStandardDateTime.sql" />
-    <Build Include="dbo\Stored Procedures\SelectMessagesByAthor.sql" />
     <None Include="Scripts\PostDeployment\TimeZoneInfo.sql" />
     <PostDeploy Include="Scripts\PostDeployment.sql" />
     <Build Include="dbo\Tables\TimeZoneInfo.sql" />
@@ -79,7 +78,6 @@
     <Build Include="dbo\Views\vAuthors.sql" />
     <Build Include="dbo\Views\vAuthorDisplayNames.sql" />
     <Build Include="dbo\Views\vAuthorNames.sql" />
-    <Build Include="dbo\Stored Procedures\SelectMessagesCountByMonth.sql" />
     <Build Include="dbo\Views\vNormalizedMessages.sql" />
     <Build Include="Storage\MessagesCat.sql" />
     <Build Include="FullTextIndexes.sql" />
@@ -89,5 +87,7 @@
     <Build Include="dbo\Functions\NormalizeString.sql" />
     <Build Include="dbo\Tables\SkypeUsers.sql" />
     <Build Include="dbo\Tables\OutlookUsers.sql" />
+    <Build Include="dbo\Stored Procedures\SelectStatistics.sql" />
+    <Build Include="dbo\Stored Procedures\SelectMessagesByAuthor.sql" />
   </ItemGroup>
 </Project>

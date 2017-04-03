@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Chmoky.Presentation.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class HomeController : Controller
     {
         public IActionResult Index()
