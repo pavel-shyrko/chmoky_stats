@@ -22,5 +22,6 @@ namespace Chmoky.DataAccess
         public Nullable<long> min_just_text { get; set; }
         public Nullable<long> max_just_text { get; set; }
         public Nullable<long> avg_just_text { get; set; }
+        public long RowNum { get; set; }
     }
 }

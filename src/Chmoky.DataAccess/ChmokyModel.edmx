@@ -186,6 +186,7 @@
           <Property Type="Int64" Name="min_just_text" Nullable="true" />
           <Property Type="Int64" Name="max_just_text" Nullable="true" />
           <Property Type="Int64" Name="avg_just_text" Nullable="true" />
+          <Property Type="Int64" Name="RowNum" Nullable="false" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>

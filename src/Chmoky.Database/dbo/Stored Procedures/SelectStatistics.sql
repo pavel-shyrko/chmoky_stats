@@ -1,4 +1,5 @@
 ﻿
+
 -- =============================================
 -- Author:		P.Shyrko
 -- Create date: 2017-03-31
@@ -48,14 +49,34 @@ BEGIN
 			AND (@enddate IS NULL OR [timestamp] < @enddate)
 		GROUP BY [author]) m
 
+	DECLARE @orderBy nvarchar(max);
+
+	SET @orderBy = 'ORDER BY m.' 
+	
+	+ 
+	
+	CASE 
+		WHEN @SortColumn LIKE 'count' THEN '[count]'
+		WHEN @SortColumn LIKE 'total_just_text' THEN '[total_just_text]'
+		WHEN @SortColumn LIKE 'min_just_text' THEN '[min_just_text]'
+		WHEN @SortColumn LIKE 'max_just_text' THEN '[max_just_text]'
+		WHEN @SortColumn LIKE 'avg_just_text' THEN '[avg_just_text]'
+		ELSE '[total_just_text]'
+	END	
+	
+	+
+		
+	CASE WHEN @SortDirection LIKE 'desc' THEN ' DESC' ELSE ' ASC' END 
+
 	DECLARE @sql nvarchar(max);
 
 	SET @sql = N'
 	SELECT
+		ROW_NUMBER() OVER(' + @orderBy + ') AS [RowNum],
 		a.[FirstName],
 		a.[LastName],
 		a.[DispName],
-		a.[author],
+		m.[author],
 		m.[count],
 		m.[total_just_text],
 		m.[min_just_text],
@@ -94,23 +115,12 @@ BEGIN
 			
 			'
 		GROUP BY [author]) m
-	INNER JOIN [dbo].[SkypeUsers] a ON m.[author] = a.[author] 
-	ORDER BY m.' 
+	LEFT OUTER JOIN [dbo].[SkypeUsers] a ON m.[author] = a.[author] 
+	'
 	
 	+ 
 	
-	CASE 
-		WHEN @SortColumn LIKE 'count' THEN '[count]'
-		WHEN @SortColumn LIKE 'total_just_text' THEN '[total_just_text]'
-		WHEN @SortColumn LIKE 'min_just_text' THEN '[min_just_text]'
-		WHEN @SortColumn LIKE 'max_just_text' THEN '[max_just_text]'
-		WHEN @SortColumn LIKE 'avg_just_text' THEN '[avg_just_text]'
-		ELSE '[total_just_text]'
-	END	
-	
-	+
-		
-	CASE WHEN @SortDirection LIKE 'desc' THEN ' DESC' ELSE ' ASC' END 
+	@orderBy
 	
 	+ 
 	
