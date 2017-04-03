@@ -89,5 +89,6 @@
     <Build Include="dbo\Tables\OutlookUsers.sql" />
     <Build Include="dbo\Stored Procedures\SelectStatistics.sql" />
     <Build Include="dbo\Stored Procedures\SelectMessagesByAuthor.sql" />
+    <Build Include="dbo\Stored Procedures\FindAuthor.sql" />
   </ItemGroup>
 </Project>
