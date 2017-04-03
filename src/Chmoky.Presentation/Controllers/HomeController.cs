@@ -50,12 +50,12 @@ namespace Chmoky.Presentation.Controllers
                 var max = new ObjectParameter("Max", typeof(int));
                 var avg = new ObjectParameter("Avg", typeof(int));
 
-                var records = ctx.SelectStatistics(startDate, endDate, 1, 10, "", "",
+                var records = ctx.SelectStatistics(startDate, endDate, offset, limit, "", "",
                     total, textLength, count, min, max, avg).ToList();
 
                 var model = new
                 {
-                    total = records.Count(),
+                    total = total.Value,
                     rows = records,
                 };
 

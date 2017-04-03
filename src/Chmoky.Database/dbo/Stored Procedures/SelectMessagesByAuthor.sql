@@ -1,5 +1,6 @@
 ﻿
 
+
 -- =============================================
 -- Author:		P.Shyrko
 -- Create date: 2017-03-31
@@ -8,8 +9,8 @@ CREATE PROCEDURE [dbo].[SelectMessagesByAuthor]
 	@author nvarchar(128),
 	@startdate datetime,
 	@enddate datetime,
-	@Page int,
-	@PageSize int,
+	@OffSet int,
+	@Limit int,
     @Total int out,
 	@TextLength int out,
 	@Min int out,
@@ -23,7 +24,6 @@ BEGIN
 	SET NOCOUNT ON;
 
 	-- please check this article https://sqlperformance.com/2012/08/t-sql-queries/conditional-order-by
-	DECLARE @OffSet int = (@Page - 1) * @PageSize	
 
 	SELECT
 		@Total = COUNT([id]),
@@ -61,6 +61,6 @@ BEGIN
 		AND (@enddate IS NULL OR [timestamp] <= @enddate)
 	ORDER BY [timestamp]
 	OFFSET @OffSet ROWS
-	FETCH NEXT @PageSize ROWS ONLY
+	FETCH NEXT @Limit ROWS ONLY
 
 END

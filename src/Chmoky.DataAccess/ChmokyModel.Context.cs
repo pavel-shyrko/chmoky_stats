@@ -39,7 +39,7 @@ namespace Chmoky.DataAccess
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FindAuthor_Result>("FindAuthor", inputParameter);
         }
     
-        public virtual ObjectResult<SelectMessagesByAuthor_Result> SelectMessagesByAuthor(string author, Nullable<System.DateTime> startdate, Nullable<System.DateTime> enddate, Nullable<int> page, Nullable<int> pageSize, ObjectParameter total, ObjectParameter textLength, ObjectParameter min, ObjectParameter max, ObjectParameter avg)
+        public virtual ObjectResult<SelectMessagesByAuthor_Result> SelectMessagesByAuthor(string author, Nullable<System.DateTime> startdate, Nullable<System.DateTime> enddate, Nullable<int> offSet, Nullable<int> limit, ObjectParameter total, ObjectParameter textLength, ObjectParameter min, ObjectParameter max, ObjectParameter avg)
         {
             var authorParameter = author != null ?
                 new ObjectParameter("author", author) :
@@ -53,18 +53,18 @@ namespace Chmoky.DataAccess
                 new ObjectParameter("enddate", enddate) :
                 new ObjectParameter("enddate", typeof(System.DateTime));
     
-            var pageParameter = page.HasValue ?
-                new ObjectParameter("Page", page) :
-                new ObjectParameter("Page", typeof(int));
+            var offSetParameter = offSet.HasValue ?
+                new ObjectParameter("OffSet", offSet) :
+                new ObjectParameter("OffSet", typeof(int));
     
-            var pageSizeParameter = pageSize.HasValue ?
-                new ObjectParameter("PageSize", pageSize) :
-                new ObjectParameter("PageSize", typeof(int));
+            var limitParameter = limit.HasValue ?
+                new ObjectParameter("Limit", limit) :
+                new ObjectParameter("Limit", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SelectMessagesByAuthor_Result>("SelectMessagesByAuthor", authorParameter, startdateParameter, enddateParameter, pageParameter, pageSizeParameter, total, textLength, min, max, avg);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SelectMessagesByAuthor_Result>("SelectMessagesByAuthor", authorParameter, startdateParameter, enddateParameter, offSetParameter, limitParameter, total, textLength, min, max, avg);
         }
     
-        public virtual ObjectResult<SelectStatistics_Result> SelectStatistics(Nullable<System.DateTime> startdate, Nullable<System.DateTime> enddate, Nullable<int> page, Nullable<int> pageSize, string sortColumn, string sortDirection, ObjectParameter total, ObjectParameter textLength, ObjectParameter count, ObjectParameter min, ObjectParameter max, ObjectParameter avg)
+        public virtual ObjectResult<SelectStatistics_Result> SelectStatistics(Nullable<System.DateTime> startdate, Nullable<System.DateTime> enddate, Nullable<int> offSet, Nullable<int> limit, string sortColumn, string sortDirection, ObjectParameter total, ObjectParameter textLength, ObjectParameter count, ObjectParameter min, ObjectParameter max, ObjectParameter avg)
         {
             var startdateParameter = startdate.HasValue ?
                 new ObjectParameter("startdate", startdate) :
@@ -74,13 +74,13 @@ namespace Chmoky.DataAccess
                 new ObjectParameter("enddate", enddate) :
                 new ObjectParameter("enddate", typeof(System.DateTime));
     
-            var pageParameter = page.HasValue ?
-                new ObjectParameter("Page", page) :
-                new ObjectParameter("Page", typeof(int));
+            var offSetParameter = offSet.HasValue ?
+                new ObjectParameter("OffSet", offSet) :
+                new ObjectParameter("OffSet", typeof(int));
     
-            var pageSizeParameter = pageSize.HasValue ?
-                new ObjectParameter("PageSize", pageSize) :
-                new ObjectParameter("PageSize", typeof(int));
+            var limitParameter = limit.HasValue ?
+                new ObjectParameter("Limit", limit) :
+                new ObjectParameter("Limit", typeof(int));
     
             var sortColumnParameter = sortColumn != null ?
                 new ObjectParameter("SortColumn", sortColumn) :
@@ -90,7 +90,7 @@ namespace Chmoky.DataAccess
                 new ObjectParameter("SortDirection", sortDirection) :
                 new ObjectParameter("SortDirection", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SelectStatistics_Result>("SelectStatistics", startdateParameter, enddateParameter, pageParameter, pageSizeParameter, sortColumnParameter, sortDirectionParameter, total, textLength, count, min, max, avg);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SelectStatistics_Result>("SelectStatistics", startdateParameter, enddateParameter, offSetParameter, limitParameter, sortColumnParameter, sortDirectionParameter, total, textLength, count, min, max, avg);
         }
     }
 }

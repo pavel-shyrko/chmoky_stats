@@ -1,5 +1,6 @@
 ﻿
 
+
 -- =============================================
 -- Author:		P.Shyrko
 -- Create date: 2017-03-31
@@ -7,8 +8,8 @@
 CREATE PROCEDURE [dbo].[SelectStatistics]
 	@startdate datetime,
 	@enddate datetime,
-	@Page int,
-	@PageSize int,
+	@OffSet int,
+	@Limit int,
 	@SortColumn nvarchar(20),
 	@SortDirection nvarchar(10),
 	@Total int out,
@@ -25,7 +26,6 @@ BEGIN
 	SET NOCOUNT ON;
 
 	-- please check this article https://sqlperformance.com/2012/08/t-sql-queries/conditional-order-by
-	DECLARE @OffSet int = (@Page - 1) * @PageSize	
 
 	SELECT
 		@Total = COUNT([author]),
@@ -78,6 +78,6 @@ BEGIN
 	INNER JOIN [dbo].[SkypeUsers] a ON m.[author] = a.[author] 
 	ORDER BY m.[total_just_text] DESC
 	OFFSET @OffSet ROWS
-	FETCH NEXT @PageSize ROWS ONLY
+	FETCH NEXT @Limit ROWS ONLY
 
 END
