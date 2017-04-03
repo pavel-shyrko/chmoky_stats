@@ -23,5 +23,8 @@ namespace Chmoky.DataAccess
         public Nullable<int> type { get; set; }
         public string body_xml { get; set; }
         public string identities { get; set; }
+        public string just_text { get; set; }
+        public Nullable<long> len_just_text { get; set; }
+        public Nullable<long> len_original { get; set; }
     }
 }

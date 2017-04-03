@@ -28,8 +28,18 @@ namespace Chmoky.DataAccess
         }
     
         public virtual DbSet<Message> Messages { get; set; }
+        public virtual DbSet<SkypeUser> SkypeUsers { get; set; }
     
-        public virtual ObjectResult<SelectMessagesByAthor_Result> SelectMessagesByAthor(string author, Nullable<System.DateTime> startdate, Nullable<System.DateTime> enddate)
+        public virtual ObjectResult<FindAuthor_Result> FindAuthor(string input)
+        {
+            var inputParameter = input != null ?
+                new ObjectParameter("Input", input) :
+                new ObjectParameter("Input", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<FindAuthor_Result>("FindAuthor", inputParameter);
+        }
+    
+        public virtual ObjectResult<SelectMessagesByAuthor_Result> SelectMessagesByAuthor(string author, Nullable<System.DateTime> startdate, Nullable<System.DateTime> enddate, Nullable<int> page, Nullable<int> pageSize, ObjectParameter total, ObjectParameter textLength, ObjectParameter min, ObjectParameter max, ObjectParameter avg)
         {
             var authorParameter = author != null ?
                 new ObjectParameter("author", author) :
@@ -43,7 +53,44 @@ namespace Chmoky.DataAccess
                 new ObjectParameter("enddate", enddate) :
                 new ObjectParameter("enddate", typeof(System.DateTime));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SelectMessagesByAthor_Result>("SelectMessagesByAthor", authorParameter, startdateParameter, enddateParameter);
+            var pageParameter = page.HasValue ?
+                new ObjectParameter("Page", page) :
+                new ObjectParameter("Page", typeof(int));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SelectMessagesByAuthor_Result>("SelectMessagesByAuthor", authorParameter, startdateParameter, enddateParameter, pageParameter, pageSizeParameter, total, textLength, min, max, avg);
+        }
+    
+        public virtual ObjectResult<SelectStatistics_Result> SelectStatistics(Nullable<System.DateTime> startdate, Nullable<System.DateTime> enddate, Nullable<int> page, Nullable<int> pageSize, string sortColumn, string sortDirection, ObjectParameter total, ObjectParameter textLength, ObjectParameter count, ObjectParameter min, ObjectParameter max, ObjectParameter avg)
+        {
+            var startdateParameter = startdate.HasValue ?
+                new ObjectParameter("startdate", startdate) :
+                new ObjectParameter("startdate", typeof(System.DateTime));
+    
+            var enddateParameter = enddate.HasValue ?
+                new ObjectParameter("enddate", enddate) :
+                new ObjectParameter("enddate", typeof(System.DateTime));
+    
+            var pageParameter = page.HasValue ?
+                new ObjectParameter("Page", page) :
+                new ObjectParameter("Page", typeof(int));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("PageSize", pageSize) :
+                new ObjectParameter("PageSize", typeof(int));
+    
+            var sortColumnParameter = sortColumn != null ?
+                new ObjectParameter("SortColumn", sortColumn) :
+                new ObjectParameter("SortColumn", typeof(string));
+    
+            var sortDirectionParameter = sortDirection != null ?
+                new ObjectParameter("SortDirection", sortDirection) :
+                new ObjectParameter("SortDirection", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SelectStatistics_Result>("SelectStatistics", startdateParameter, enddateParameter, pageParameter, pageSizeParameter, sortColumnParameter, sortDirectionParameter, total, textLength, count, min, max, avg);
         }
     }
 }

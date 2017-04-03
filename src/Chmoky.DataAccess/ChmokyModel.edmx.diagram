@@ -5,7 +5,8 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="9bf0b4f9882c4fd2bad2704a8f2eeeb0" Name="Diagram1">
-        <EntityTypeShape EntityType="ChmokyModel.Message" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ChmokyModel.Message" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="ChmokyModel.SkypeUser" Width="1.5" PointX="2.75" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -19,3 +19,20 @@
 
 
 
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_SkypeUsers_LastName]
+    ON [dbo].[SkypeUsers]([LastName] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_SkypeUsers_FirstName]
+    ON [dbo].[SkypeUsers]([FirstName] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [IX_SkypeUsers_Account]
+    ON [dbo].[SkypeUsers]([Account] ASC);
+

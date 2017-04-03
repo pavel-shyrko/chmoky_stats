@@ -4,77 +4,188 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ChmokyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ChmokyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Messages">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="bigint" Nullable="false" />
-          <Property Name="author" Type="nvarchar(max)" />
-          <Property Name="from_dispname" Type="nvarchar(max)" />
+          <Property Name="author" Type="nvarchar" MaxLength="128" />
+          <Property Name="from_dispname" Type="nvarchar" MaxLength="256" />
           <Property Name="timestamp" Type="datetime" />
-          <Property Name="edited_by" Type="nvarchar(max)" />
+          <Property Name="edited_by" Type="nvarchar" MaxLength="128" />
           <Property Name="edited_timestamp" Type="datetime" />
           <Property Name="type" Type="int" />
           <Property Name="body_xml" Type="nvarchar(max)" />
-          <Property Name="identities" Type="nvarchar(max)" />
+          <Property Name="identities" Type="nvarchar" MaxLength="256" />
+          <Property Name="just_text" Type="nvarchar(max)" StoreGeneratedPattern="Computed" />
+          <Property Name="len_just_text" Type="bigint" StoreGeneratedPattern="Computed" />
+          <Property Name="len_original" Type="bigint" StoreGeneratedPattern="Computed" />
         </EntityType>
-        <Function Name="GetDaylightStandardDateTime" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="datetime">
-          <Parameter Name="Year" Type="int" Mode="In" />
-          <Parameter Name="Month" Type="int" Mode="In" />
-          <Parameter Name="DayOfWeek" Type="smallint" Mode="In" />
-          <Parameter Name="Week" Type="smallint" Mode="In" />
-          <Parameter Name="Hour" Type="smallint" Mode="In" />
+        <EntityType Name="SkypeUsers">
+          <Key>
+            <PropertyRef Name="author" />
+          </Key>
+          <Property Name="author" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="100" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="100" />
+          <Property Name="DispName" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="CompanyDepartment" Type="nvarchar" MaxLength="100" />
+          <Property Name="JobTitle" Type="nvarchar" MaxLength="255" />
+          <Property Name="Dismissed" Type="bit" />
+          <Property Name="City" Type="nvarchar" MaxLength="255" />
+          <Property Name="Country" Type="nvarchar" MaxLength="255" />
+          <Property Name="Account" Type="nvarchar" MaxLength="255" />
+          <Property Name="EmailDisplayName" Type="nvarchar" MaxLength="255" />
+          <Property Name="ManagersName" Type="nvarchar" MaxLength="255" />
+          <Property Name="OfficeLocation" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <Function Name="FindAuthor" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Input" Type="nvarchar" Mode="In" />
         </Function>
-        <Function Name="GetLocalDateTime" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="datetime">
-          <Parameter Name="UTCDate" Type="datetime" Mode="In" />
-          <Parameter Name="TimeZoneID" Type="smallint" Mode="In" />
-        </Function>
-        <Function Name="SelectMessagesByAthor" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="author" Type="nvarchar(max)" Mode="In" />
+        <Function Name="SelectMessagesByAuthor" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="author" Type="nvarchar" Mode="In" />
           <Parameter Name="startdate" Type="datetime" Mode="In" />
           <Parameter Name="enddate" Type="datetime" Mode="In" />
+          <Parameter Name="Page" Type="int" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
+          <Parameter Name="TextLength" Type="int" Mode="InOut" />
+          <Parameter Name="Min" Type="int" Mode="InOut" />
+          <Parameter Name="Max" Type="int" Mode="InOut" />
+          <Parameter Name="Avg" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="SelectStatistics" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="startdate" Type="datetime" Mode="In" />
+          <Parameter Name="enddate" Type="datetime" Mode="In" />
+          <Parameter Name="Page" Type="int" Mode="In" />
+          <Parameter Name="PageSize" Type="int" Mode="In" />
+          <Parameter Name="SortColumn" Type="nvarchar" Mode="In" />
+          <Parameter Name="SortDirection" Type="nvarchar" Mode="In" />
+          <Parameter Name="Total" Type="int" Mode="InOut" />
+          <Parameter Name="TextLength" Type="int" Mode="InOut" />
+          <Parameter Name="Count" Type="int" Mode="InOut" />
+          <Parameter Name="Min" Type="int" Mode="InOut" />
+          <Parameter Name="Max" Type="int" Mode="InOut" />
+          <Parameter Name="Avg" Type="int" Mode="InOut" />
         </Function>
         <EntityContainer Name="ChmokyModelStoreContainer">
           <EntitySet Name="Messages" EntityType="Self.Messages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SkypeUsers" EntityType="Self.SkypeUsers" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ChmokyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="ChmokyEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Messages" EntityType="ChmokyModel.Message" />
+          <EntitySet Name="SkypeUsers" EntityType="ChmokyModel.SkypeUser" />
+          <FunctionImport Name="FindAuthor" ReturnType="Collection(ChmokyModel.FindAuthor_Result)">
+            <Parameter Name="Input" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SelectMessagesByAuthor" ReturnType="Collection(ChmokyModel.SelectMessagesByAuthor_Result)">
+            <Parameter Name="author" Mode="In" Type="String" />
+            <Parameter Name="startdate" Mode="In" Type="DateTime" />
+            <Parameter Name="enddate" Mode="In" Type="DateTime" />
+            <Parameter Name="Page" Mode="In" Type="Int32" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="TextLength" Mode="InOut" Type="Int32" />
+            <Parameter Name="Min" Mode="InOut" Type="Int32" />
+            <Parameter Name="Max" Mode="InOut" Type="Int32" />
+            <Parameter Name="Avg" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SelectStatistics" ReturnType="Collection(ChmokyModel.SelectStatistics_Result)">
+            <Parameter Name="startdate" Mode="In" Type="DateTime" />
+            <Parameter Name="enddate" Mode="In" Type="DateTime" />
+            <Parameter Name="Page" Mode="In" Type="Int32" />
+            <Parameter Name="PageSize" Mode="In" Type="Int32" />
+            <Parameter Name="SortColumn" Mode="In" Type="String" />
+            <Parameter Name="SortDirection" Mode="In" Type="String" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="TextLength" Mode="InOut" Type="Int32" />
+            <Parameter Name="Count" Mode="InOut" Type="Int32" />
+            <Parameter Name="Min" Mode="InOut" Type="Int32" />
+            <Parameter Name="Max" Mode="InOut" Type="Int32" />
+            <Parameter Name="Avg" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
         <EntityType Name="Message">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int64" Nullable="false" />
-          <Property Name="author" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="from_dispname" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="author" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="from_dispname" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="timestamp" Type="DateTime" Precision="3" />
-          <Property Name="edited_by" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="edited_by" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="edited_timestamp" Type="DateTime" Precision="3" />
           <Property Name="type" Type="Int32" />
           <Property Name="body_xml" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="identities" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="identities" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="just_text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="len_just_text" Type="Int64" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="len_original" Type="Int64" annotation:StoreGeneratedPattern="Computed" />
         </EntityType>
-        <EntityContainer Name="ChmokyEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Messages" EntityType="Self.Message" />
-          <FunctionImport Name="SelectMessagesByAthor" ReturnType="Collection(ChmokyModel.SelectMessagesByAthor_Result)">
-            <Parameter Name="author" Mode="In" Type="String" />
-            <Parameter Name="startdate" Mode="In" Type="DateTime" />
-            <Parameter Name="enddate" Mode="In" Type="DateTime" />
-          </FunctionImport>
-        </EntityContainer>
-        <ComplexType Name="SelectMessagesByAthor_Result">
+        <EntityType Name="SkypeUser">
+          <Key>
+            <PropertyRef Name="author" />
+          </Key>
+          <Property Name="author" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DispName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyDepartment" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="JobTitle" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Dismissed" Type="Boolean" />
+          <Property Name="City" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Account" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="EmailDisplayName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ManagersName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="OfficeLocation" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <ComplexType Name="FindAuthor_Result">
+          <Property Type="String" Name="author" Nullable="false" MaxLength="128" />
+          <Property Type="String" Name="FirstName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="LastName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="DispName" Nullable="false" MaxLength="256" />
+          <Property Type="String" Name="CompanyDepartment" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="JobTitle" Nullable="true" MaxLength="255" />
+          <Property Type="Boolean" Name="Dismissed" Nullable="true" />
+          <Property Type="String" Name="City" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Country" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Account" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="EmailDisplayName" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="ManagersName" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="OfficeLocation" Nullable="true" MaxLength="255" />
+        </ComplexType>
+        <ComplexType Name="SelectMessagesByAuthor_Result">
           <Property Type="Int64" Name="id" Nullable="false" />
-          <Property Type="String" Name="author" Nullable="true" />
-          <Property Type="String" Name="from_dispname" Nullable="true" />
+          <Property Type="String" Name="FirstName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="LastName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="DispName" Nullable="false" MaxLength="256" />
+          <Property Type="String" Name="DispName1" Nullable="false" MaxLength="256" />
           <Property Type="DateTime" Name="timestamp" Nullable="true" Precision="23" />
-          <Property Type="String" Name="edited_by" Nullable="true" />
+          <Property Type="String" Name="edited_by" Nullable="true" MaxLength="128" />
           <Property Type="DateTime" Name="edited_timestamp" Nullable="true" Precision="23" />
           <Property Type="Int32" Name="type" Nullable="true" />
-          <Property Type="String" Name="body_xml" Nullable="true" />
-          <Property Type="String" Name="identities" Nullable="true" />
+          <Property Type="String" Name="identities" Nullable="true" MaxLength="256" />
+          <Property Type="String" Name="original" Nullable="true" />
+          <Property Type="String" Name="just_text" Nullable="true" />
+          <Property Type="Int64" Name="len_original" Nullable="true" />
+          <Property Type="Int64" Name="len_just_text" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="SelectStatistics_Result">
+          <Property Type="String" Name="FirstName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="LastName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="DispName" Nullable="false" MaxLength="256" />
+          <Property Type="String" Name="author" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="count" Nullable="true" />
+          <Property Type="Int64" Name="total_just_text" Nullable="true" />
+          <Property Type="Int64" Name="min_just_text" Nullable="true" />
+          <Property Type="Int64" Name="max_just_text" Nullable="true" />
+          <Property Type="Int64" Name="avg_just_text" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -85,30 +196,91 @@
           <EntitySetMapping Name="Messages">
             <EntityTypeMapping TypeName="ChmokyModel.Message">
               <MappingFragment StoreEntitySet="Messages">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="author" ColumnName="author" />
-                <ScalarProperty Name="from_dispname" ColumnName="from_dispname" />
-                <ScalarProperty Name="timestamp" ColumnName="timestamp" />
-                <ScalarProperty Name="edited_by" ColumnName="edited_by" />
-                <ScalarProperty Name="edited_timestamp" ColumnName="edited_timestamp" />
-                <ScalarProperty Name="type" ColumnName="type" />
-                <ScalarProperty Name="body_xml" ColumnName="body_xml" />
+                <ScalarProperty Name="len_original" ColumnName="len_original" />
+                <ScalarProperty Name="len_just_text" ColumnName="len_just_text" />
+                <ScalarProperty Name="just_text" ColumnName="just_text" />
                 <ScalarProperty Name="identities" ColumnName="identities" />
+                <ScalarProperty Name="body_xml" ColumnName="body_xml" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="edited_timestamp" ColumnName="edited_timestamp" />
+                <ScalarProperty Name="edited_by" ColumnName="edited_by" />
+                <ScalarProperty Name="timestamp" ColumnName="timestamp" />
+                <ScalarProperty Name="from_dispname" ColumnName="from_dispname" />
+                <ScalarProperty Name="author" ColumnName="author" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="SelectMessagesByAthor" FunctionName="ChmokyModel.Store.SelectMessagesByAthor">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="ChmokyModel.SelectMessagesByAthor_Result">
-                <ScalarProperty Name="id" ColumnName="id" />
+          <EntitySetMapping Name="SkypeUsers">
+            <EntityTypeMapping TypeName="ChmokyModel.SkypeUser">
+              <MappingFragment StoreEntitySet="SkypeUsers">
+                <ScalarProperty Name="OfficeLocation" ColumnName="OfficeLocation" />
+                <ScalarProperty Name="ManagersName" ColumnName="ManagersName" />
+                <ScalarProperty Name="EmailDisplayName" ColumnName="EmailDisplayName" />
+                <ScalarProperty Name="Account" ColumnName="Account" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Dismissed" ColumnName="Dismissed" />
+                <ScalarProperty Name="JobTitle" ColumnName="JobTitle" />
+                <ScalarProperty Name="CompanyDepartment" ColumnName="CompanyDepartment" />
+                <ScalarProperty Name="DispName" ColumnName="DispName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="author" ColumnName="author" />
-                <ScalarProperty Name="from_dispname" ColumnName="from_dispname" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="FindAuthor" FunctionName="ChmokyModel.Store.FindAuthor">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ChmokyModel.FindAuthor_Result">
+                <ScalarProperty Name="author" ColumnName="author" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="DispName" ColumnName="DispName" />
+                <ScalarProperty Name="CompanyDepartment" ColumnName="CompanyDepartment" />
+                <ScalarProperty Name="JobTitle" ColumnName="JobTitle" />
+                <ScalarProperty Name="Dismissed" ColumnName="Dismissed" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Account" ColumnName="Account" />
+                <ScalarProperty Name="EmailDisplayName" ColumnName="EmailDisplayName" />
+                <ScalarProperty Name="ManagersName" ColumnName="ManagersName" />
+                <ScalarProperty Name="OfficeLocation" ColumnName="OfficeLocation" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SelectMessagesByAuthor" FunctionName="ChmokyModel.Store.SelectMessagesByAuthor">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ChmokyModel.SelectMessagesByAuthor_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="DispName" ColumnName="DispName" />
+                <ScalarProperty Name="DispName1" ColumnName="DispName1" />
                 <ScalarProperty Name="timestamp" ColumnName="timestamp" />
                 <ScalarProperty Name="edited_by" ColumnName="edited_by" />
                 <ScalarProperty Name="edited_timestamp" ColumnName="edited_timestamp" />
                 <ScalarProperty Name="type" ColumnName="type" />
-                <ScalarProperty Name="body_xml" ColumnName="body_xml" />
                 <ScalarProperty Name="identities" ColumnName="identities" />
+                <ScalarProperty Name="original" ColumnName="original" />
+                <ScalarProperty Name="just_text" ColumnName="just_text" />
+                <ScalarProperty Name="len_original" ColumnName="len_original" />
+                <ScalarProperty Name="len_just_text" ColumnName="len_just_text" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SelectStatistics" FunctionName="ChmokyModel.Store.SelectStatistics">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ChmokyModel.SelectStatistics_Result">
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="DispName" ColumnName="DispName" />
+                <ScalarProperty Name="author" ColumnName="author" />
+                <ScalarProperty Name="count" ColumnName="count" />
+                <ScalarProperty Name="total_just_text" ColumnName="total_just_text" />
+                <ScalarProperty Name="min_just_text" ColumnName="min_just_text" />
+                <ScalarProperty Name="max_just_text" ColumnName="max_just_text" />
+                <ScalarProperty Name="avg_just_text" ColumnName="avg_just_text" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

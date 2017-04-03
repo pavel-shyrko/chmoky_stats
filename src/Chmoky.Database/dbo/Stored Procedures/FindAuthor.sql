@@ -1,5 +1,6 @@
 ﻿
 
+
 -- =============================================
 -- Author:		P.Shyrko
 -- Create date: 2017-04-03
@@ -15,17 +16,19 @@ BEGIN
 	
 	DECLARE @Input1 nvarchar(257) = '%' + @Input + '%'
 
-	SELECT
-		*
+	SELECT DISTINCT
+		s.*
 	FROM
-		[dbo].[SkypeUsers]
+		[dbo].[SkypeUsers] s
+		INNER JOIN [dbo].[vAuthorDisplayNames] d ON s.[author] = d.[author] 
 	WHERE
 		@Input IS NULL 
-		OR ([FirstName] LIKE @Input1)
-		OR ([LastName] LIKE @Input1)
-		OR ([author] LIKE @Input1)
-		OR ([account] LIKE @Input1)
-	ORDER BY [LastName], [FirstName] 
+		OR (s.[FirstName] LIKE @Input1)
+		OR (s.[LastName] LIKE @Input1)
+		OR (s.[author] LIKE @Input1)
+		OR (s.[account] LIKE @Input1)
+		OR (d.[from_dispname] LIKE @Input1)
+	ORDER BY s.[LastName], s.[FirstName] 
 
 
 END
