@@ -1,5 +1,6 @@
 ﻿
 
+
 CREATE VIEW [dbo].[vNormalizedMessages]
 WITH SCHEMABINDING 
 AS
@@ -15,7 +16,7 @@ AS
 	  ,[identities]
       ,[body_xml] as [original]
       ,[dbo].[NormalizeString]([body_xml]) AS [just_text]
-	  ,LEN([body_xml]) as [len_original]
+	  --,LEN([body_xml]) as [len_original]
       ,LEN([dbo].[NormalizeString]([body_xml])) AS [len_just_text]
 	  --,[dbo].HasTag([body_xml], 'a') AS [has_link]
 	  --,[dbo].HasTag([body_xml], 'quote') AS [has_quote]

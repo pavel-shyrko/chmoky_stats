@@ -87,5 +87,7 @@
     <Build Include="dbo\Functions\RemoveTag.sql" />
     <Build Include="dbo\Functions\HasTag.sql" />
     <Build Include="dbo\Functions\NormalizeString.sql" />
+    <Build Include="dbo\Tables\SkypeUsers.sql" />
+    <Build Include="dbo\Tables\OutlookUsers.sql" />
   </ItemGroup>
 </Project>
