@@ -1,6 +1,4 @@
 ﻿
-
-
 -- =============================================
 -- Author:		P.Shyrko
 -- Create date: 2017-03-31
@@ -50,6 +48,9 @@ BEGIN
 			AND (@enddate IS NULL OR [timestamp] < @enddate)
 		GROUP BY [author]) m
 
+	DECLARE @sql nvarchar(max);
+
+	SET @sql = N'
 	SELECT
 		a.[FirstName],
 		a.[LastName],
@@ -71,13 +72,53 @@ BEGIN
 		FROM [dbo].[Messages] m		
 		WHERE
 			[body_xml] IS NOT NULL 
-			AND [body_xml] <> ''
-			AND (@startdate IS NULL OR [timestamp] >= @startdate)
-			AND (@enddate IS NULL OR [timestamp] < @enddate)
+			AND [body_xml] <> ''''
+			'
+			
+			+
+			
+			CASE 
+				WHEN @startdate IS NOT NULL THEN 'AND ([timestamp] >= N''' + convert(varchar(25),@startdate,121) + ''')
+			'
+				ELSE ''
+			END
+			
+			+
+			
+			CASE 
+				WHEN @enddate IS NOT NULL THEN 'AND ([timestamp] < N''' + convert(varchar(25),@enddate,121) + ''')
+			'
+				ELSE ''
+			END
+			+
+			
+			'
 		GROUP BY [author]) m
 	INNER JOIN [dbo].[SkypeUsers] a ON m.[author] = a.[author] 
-	ORDER BY m.[total_just_text] DESC
-	OFFSET @OffSet ROWS
-	FETCH NEXT @Limit ROWS ONLY
+	ORDER BY m.' 
+	
+	+ 
+	
+	CASE 
+		WHEN @SortColumn LIKE 'count' THEN '[count]'
+		WHEN @SortColumn LIKE 'total_just_text' THEN '[total_just_text]'
+		WHEN @SortColumn LIKE 'min_just_text' THEN '[min_just_text]'
+		WHEN @SortColumn LIKE 'max_just_text' THEN '[max_just_text]'
+		WHEN @SortColumn LIKE 'avg_just_text' THEN '[avg_just_text]'
+		ELSE '[total_just_text]'
+	END	
+	
+	+
+		
+	CASE WHEN @SortDirection LIKE 'desc' THEN ' DESC' ELSE ' ASC' END 
+	
+	+ 
+	
+	'
+	OFFSET ' + CAST(@OffSet as varchar(15)) + ' ROWS
+	FETCH NEXT ' + CAST(@Limit as varchar(15)) + ' ROWS ONLY
+	';
+
+	EXECUTE sp_executesql @Sql;
 
 END

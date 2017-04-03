@@ -47,11 +47,11 @@
                 <th data-field="LastName" data-halign="center">Last Name</th>
                 <th data-field="DispName" data-halign="center">Skype Name</th>
                 <th data-field="author" data-formatter="authorFormatter" data-halign="center">Skype ID</th>
-                <th data-field="count" data-sortable="true" data-align="right" data-halign="center">Messages<br/>Count</th>
-                <th data-field="total_just_text" data-sortable="true" data-align="right" data-halign="center">Messages<br />Length</th>
-                <th data-field="min_just_text" data-sortable="true" data-align="right" data-halign="center">Min<br />Message</th>
-                <th data-field="max_just_text" data-sortable="true" data-align="right" data-halign="center">Max<br />Message</th>
-                <th data-field="avg_just_text" data-sortable="true" data-align="right" data-halign="center">Avg<br />Message</th>
+                <th data-field="count" data-formatter="numberFormatter" data-sortable="true" data-align="right" data-halign="center">Messages<br/>Count</th>
+                <th data-field="total_just_text" data-formatter="numberFormatter" data-sortable="true" data-align="right" data-halign="center">Messages<br />Length</th>
+                <th data-field="min_just_text" data-formatter="numberFormatter" data-sortable="true" data-align="right" data-halign="center">Min<br />Message</th>
+                <th data-field="max_just_text" data-formatter="numberFormatter" data-sortable="true" data-align="right" data-halign="center">Max<br />Message</th>
+                <th data-field="avg_just_text" data-formatter="numberFormatter" data-sortable="true" data-align="right" data-halign="center">Avg<br />Message</th>
             </tr>
         </thead>
     </table>
@@ -107,14 +107,19 @@
             return '<a href="/Home/Messages?author=' + value + '">' + value + '</a>';
         }
 
+        function numberFormatter(value) {
+            if (value === null) return null;
+            return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
         $('#topGodel')
             .on('load-success.bs.table', function (e, data) {
-                $('#participants').html(data.total);
-                $('#total').html(data.textLength);
-                $('#count').html(data.count);
-                $('#min').html(data.min);
-                $('#max').html(data.max);
-                $('#avg').html(data.avg);
+                $('#participants').html(numberFormatter(data.total));
+                $('#total').html(numberFormatter(data.textLength));
+                $('#count').html(numberFormatter(data.count));
+                $('#min').html(numberFormatter(data.min));
+                $('#max').html(numberFormatter(data.max));
+                $('#avg').html(numberFormatter(data.avg));
             });
     </script>
 }
