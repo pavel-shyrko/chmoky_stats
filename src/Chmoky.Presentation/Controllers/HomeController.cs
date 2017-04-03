@@ -13,21 +13,11 @@ namespace Chmoky.Presentation.Controllers
     {
         public ActionResult Index() { return View(); }
 
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
+        public ActionResult Messages() { return View(); }
 
-            return View();
-        }
+        public ActionResult Contact() { return View(); }
 
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
-
-        public JsonResult GetTop10(string currentDate, int offset, int limit, string search, string sort, string order)
+        public JsonResult GetTop(string currentDate, int offset, int limit, string search, string sort, string order)
         {
             var previous = DateTime.Parse(currentDate);
 
@@ -55,6 +45,11 @@ namespace Chmoky.Presentation.Controllers
 
                 var model = new
                 {
+                    count = count.Value,
+                    textLength = textLength.Value,
+                    min = min.Value,
+                    max = max.Value,
+                    avg = avg.Value,
                     total = total.Value,
                     rows = records,
                 };
