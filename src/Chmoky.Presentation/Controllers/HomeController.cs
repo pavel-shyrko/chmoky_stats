@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity.Core.Objects;
@@ -13,11 +14,11 @@ namespace Chmoky.Presentation.Controllers
     {
         public ActionResult Index() { return View(); }
 
-        public ActionResult Messages() { return View(); }
+        public ActionResult Messages(string author) { return View(); }
 
         public ActionResult Contact() { return View(); }
 
-        public JsonResult GetTop(string currentDate, int offset, int limit, string search, string sort, string order)
+        public JsonResult GetTop10(string currentDate, int offset, int limit, string search, string sort, string order)
         {
             var previous = DateTime.Parse(currentDate);
 
@@ -43,15 +44,15 @@ namespace Chmoky.Presentation.Controllers
                 var records = ctx.SelectStatistics(startDate, endDate, offset, limit, sort, order,
                     total, textLength, count, min, max, avg).ToList();
 
-                var model = new
+                var model = new Models.Top10Model
                 {
-                    count = count.Value,
-                    textLength = textLength.Value,
-                    min = min.Value,
-                    max = max.Value,
-                    avg = avg.Value,
-                    total = total.Value,
-                    rows = records,
+                    count = count.Value as int?,
+                    textLength = textLength.Value as int?,
+                    min = min.Value as int?,
+                    max = max.Value as int?,
+                    avg = avg.Value as int?,
+                    total = total.Value as int?,
+                    rows = Mapper.Map<IEnumerable<Models.Top10Record>>(records),
                 };
 
                 return Json(model, JsonRequestBehavior.DenyGet);
