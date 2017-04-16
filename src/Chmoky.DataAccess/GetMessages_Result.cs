@@ -11,13 +11,11 @@ namespace Chmoky.DataAccess
 {
     using System;
     
-    public partial class SelectMessagesByAuthor_Result
+    public partial class GetMessages_Result
     {
         public long id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string DispName { get; set; }
-        public string DispName1 { get; set; }
         public Nullable<System.DateTime> timestamp { get; set; }
         public string edited_by { get; set; }
         public Nullable<System.DateTime> edited_timestamp { get; set; }
@@ -27,5 +25,6 @@ namespace Chmoky.DataAccess
         public string just_text { get; set; }
         public Nullable<long> len_original { get; set; }
         public Nullable<long> len_just_text { get; set; }
+        public string DispNames { get; set; }
     }
 }

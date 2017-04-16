@@ -1,11 +1,12 @@
 ﻿
 
 
+
 -- =============================================
 -- Author:		P.Shyrko
 -- Create date: 2017-03-31
 -- =============================================
-CREATE PROCEDURE [dbo].[SelectMessagesByAuthor]
+CREATE PROCEDURE [dbo].[GetMessages]
 	@author nvarchar(128),
 	@startdate datetime,
 	@enddate datetime,
@@ -40,10 +41,9 @@ BEGIN
 
 	SELECT
 	   [id]
-      ,a.[FirstName]
-	  ,a.[LastName]
-	  ,a.[DispName]
-      ,a.[DispName]
+      ,s.[FirstName]
+	  ,s.[LastName]
+	  ,a.[DispNames]
       ,[timestamp]
       ,[edited_by]
       ,[edited_timestamp]
@@ -53,8 +53,9 @@ BEGIN
       ,[just_text]
       ,[len_original]
       ,[len_just_text]
-	FROM [dbo].[SkypeUsers] a 
-		INNER JOIN [dbo].[Messages] m ON a.[author] = m.[author]  
+	FROM [dbo].[Messages] m 
+	    INNER JOIN [dbo].[vAuthorNames] a ON m.[author] = a.[author]
+		LEFT OUTER JOIN [dbo].[SkypeUsers] s ON s.[author] = m.[author]  
 	WHERE
 		(@author IS NULL OR a.[author] LIKE @author)
 		AND (@startdate IS NULL OR [timestamp] >= @startdate)

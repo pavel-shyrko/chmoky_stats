@@ -1,10 +1,11 @@
 ﻿
 
+
 -- =============================================
 -- Author:		P.Shyrko
 -- Create date: 2017-03-31
 -- =============================================
-CREATE PROCEDURE [dbo].[SelectStatistics]
+CREATE PROCEDURE [dbo].[GetStatistics]
 	@startdate datetime,
 	@enddate datetime,
 	@OffSet int,
@@ -73,9 +74,9 @@ BEGIN
 	SET @sql = N'
 	SELECT
 		ROW_NUMBER() OVER(' + @orderBy + ') AS [RowNum],
-		a.[FirstName],
-		a.[LastName],
-		a.[DispName],
+		s.[FirstName],
+		s.[LastName],
+		a.[DispNames] AS [DispName],
 		m.[author],
 		m.[count],
 		m.[total_just_text],
@@ -115,7 +116,8 @@ BEGIN
 			
 			'
 		GROUP BY [author]) m
-	LEFT OUTER JOIN [dbo].[SkypeUsers] a ON m.[author] = a.[author] 
+	INNER JOIN [dbo].[vAuthorNames] a ON m.[author] = a.[author]
+	LEFT OUTER JOIN [dbo].[SkypeUsers] s ON m.[author] = s.[author] 
 	'
 	
 	+ 

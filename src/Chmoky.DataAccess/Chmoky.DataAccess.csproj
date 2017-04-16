@@ -66,19 +66,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ChmokyModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="FindAuthor_Result.cs">
+    <Compile Include="GetMessages_Result.cs">
+      <DependentUpon>ChmokyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GetStatistics_Result.cs">
       <DependentUpon>ChmokyModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Message.cs">
       <DependentUpon>ChmokyModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SelectMessagesByAuthor_Result.cs">
-      <DependentUpon>ChmokyModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="SelectStatistics_Result.cs">
-      <DependentUpon>ChmokyModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="SkypeUser.cs">
       <DependentUpon>ChmokyModel.tt</DependentUpon>
     </Compile>

@@ -11,20 +11,17 @@ namespace Chmoky.DataAccess
 {
     using System;
     
-    public partial class FindAuthor_Result
+    public partial class GetStatistics_Result
     {
-        public string author { get; set; }
+        public Nullable<long> RowNum { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string DispName { get; set; }
-        public string CompanyDepartment { get; set; }
-        public string JobTitle { get; set; }
-        public Nullable<bool> Dismissed { get; set; }
-        public string City { get; set; }
-        public string Country { get; set; }
-        public string Account { get; set; }
-        public string EmailDisplayName { get; set; }
-        public string ManagersName { get; set; }
-        public string OfficeLocation { get; set; }
+        public string author { get; set; }
+        public Nullable<int> count { get; set; }
+        public Nullable<long> total_just_text { get; set; }
+        public Nullable<long> min_just_text { get; set; }
+        public Nullable<long> max_just_text { get; set; }
+        public Nullable<long> avg_just_text { get; set; }
     }
 }

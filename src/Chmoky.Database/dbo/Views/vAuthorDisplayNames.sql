@@ -1,4 +1,5 @@
 ﻿
+
 CREATE VIEW [dbo].[vAuthorDisplayNames]
 WITH SCHEMABINDING 
 AS
@@ -6,6 +7,7 @@ AS
 	SELECT 
 		[author],
 		[from_dispname],
+		--MAX([timestamp]) AS [last_timestamp],
 		COUNT_BIG(*) AS [Count] 
 	FROM [dbo].[Messages]
 	GROUP BY [author], [from_dispname]

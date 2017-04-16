@@ -41,7 +41,48 @@ namespace Chmoky.Presentation.Controllers
                 var max = new ObjectParameter("Max", typeof(int));
                 var avg = new ObjectParameter("Avg", typeof(int));
 
-                var records = ctx.SelectStatistics(startDate, endDate, offset, limit, sort, order,
+                var records = ctx.GetStatistics(startDate, endDate, offset, limit, sort, order,
+                    total, textLength, count, min, max, avg).ToList();
+
+                var model = new Models.Top10Model
+                {
+                    count = count.Value as int?,
+                    textLength = textLength.Value as int?,
+                    min = min.Value as int?,
+                    max = max.Value as int?,
+                    avg = avg.Value as int?,
+                    total = total.Value as int?,
+                    rows = Mapper.Map<IEnumerable<Models.Top10Record>>(records),
+                };
+
+                return Json(model, JsonRequestBehavior.DenyGet);
+            }
+        }
+
+        public JsonResult GetMessages(string currentDate, int offset, int limit, string search, string sort, string order)
+        {
+            var previous = DateTime.Parse(currentDate);
+
+            var prevYear = previous.Year;
+            var prevMonth = previous.Month;
+
+            var startDate = new DateTime(prevYear, prevMonth, 1).ToUniversalTime();
+
+            var currentYear = previous.AddMonths(1).Year;
+            var currentMonth = previous.AddMonths(1).Month;
+
+            var endDate = new DateTime(currentYear, currentMonth, 1).ToUniversalTime();
+
+            using (var ctx = new Chmoky.DataAccess.ChmokyEntities())
+            {
+                var total = new ObjectParameter("Total", typeof(int));
+                var textLength = new ObjectParameter("TextLength", typeof(int));
+                var count = new ObjectParameter("Count", typeof(int));
+                var min = new ObjectParameter("Min", typeof(int));
+                var max = new ObjectParameter("Max", typeof(int));
+                var avg = new ObjectParameter("Avg", typeof(int));
+
+                var records = ctx.GetStatistics(startDate, endDate, offset, limit, sort, order,
                     total, textLength, count, min, max, avg).ToList();
 
                 var model = new Models.Top10Model
