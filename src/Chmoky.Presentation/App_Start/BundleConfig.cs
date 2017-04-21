@@ -32,6 +32,11 @@ namespace Chmoky.Presentation
                       "~/content/simple-sidebar.css",
                       "~/content/bootstrap-table.min.css", //<--- added
                       "~/Content/site.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/indexView").Include(
+                        "~/Scripts/date.js",
+                        "~/Scripts/indexView.js" //<--- added (ajax support)
+                        ));
         }
     }
 }

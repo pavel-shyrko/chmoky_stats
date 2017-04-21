@@ -158,7 +158,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Mappers\ViewModelMappingProfile.cs" />
-    <Compile Include="Models\Top10Model.cs" />
+    <Compile Include="Models\AuthorModel.cs" />
+    <Compile Include="Models\TopRecordModel.cs" />
+    <Compile Include="Models\TopModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -228,6 +230,7 @@
     <Content Include="Scripts\bootstrap-table\locale\bootstrap-table-zh-TW.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\indexView.js" />
     <Content Include="Scripts\date.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

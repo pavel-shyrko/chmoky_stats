@@ -18,7 +18,7 @@ namespace Chmoky.Presentation.Controllers
 
         public ActionResult Contact() { return View(); }
 
-        public JsonResult GetTop10(string currentDate, int offset, int limit, string search, string sort, string order)
+        public JsonResult GetTop(string currentDate, int offset, int limit, string search, string sort, string order)
         {
             var previous = DateTime.Parse(currentDate);
 
@@ -44,7 +44,7 @@ namespace Chmoky.Presentation.Controllers
                 var records = ctx.GetStatistics(startDate, endDate, offset, limit, sort, order,
                     total, textLength, count, min, max, avg).ToList();
 
-                var model = new Models.Top10Model
+                var model = new Models.TopModel
                 {
                     count = count.Value as int?,
                     textLength = textLength.Value as int?,
@@ -52,7 +52,7 @@ namespace Chmoky.Presentation.Controllers
                     max = max.Value as int?,
                     avg = avg.Value as int?,
                     total = total.Value as int?,
-                    rows = Mapper.Map<IEnumerable<Models.Top10Record>>(records),
+                    rows = Mapper.Map<IEnumerable<Models.TopRecordModel>>(records),
                 };
 
                 return Json(model, JsonRequestBehavior.DenyGet);
@@ -85,7 +85,7 @@ namespace Chmoky.Presentation.Controllers
                 var records = ctx.GetStatistics(startDate, endDate, offset, limit, sort, order,
                     total, textLength, count, min, max, avg).ToList();
 
-                var model = new Models.Top10Model
+                var model = new Models.TopModel
                 {
                     count = count.Value as int?,
                     textLength = textLength.Value as int?,
@@ -93,7 +93,7 @@ namespace Chmoky.Presentation.Controllers
                     max = max.Value as int?,
                     avg = avg.Value as int?,
                     total = total.Value as int?,
-                    rows = Mapper.Map<IEnumerable<Models.Top10Record>>(records),
+                    rows = Mapper.Map<IEnumerable<Models.TopRecordModel>>(records),
                 };
 
                 return Json(model, JsonRequestBehavior.DenyGet);
