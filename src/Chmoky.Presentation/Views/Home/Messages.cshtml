@@ -1,1 +1,65 @@
-﻿
+﻿@{
+    ViewBag.Title = "Top 10";
+}
+<h2>@ViewBag.Title</h2>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-6">
+            <h5>Participants: <span id="participants"></span></h5>
+            <h5>Messages Count: <span id="count"></span></h5>
+            <h5>Messages Length: <span id="total"></span></h5>
+        </div>
+        <div class="col-lg-6">
+            <h5>Min Message: <span id="min"></span></h5>
+            <h5>Max Message: <span id="max"></span></h5>
+            <h5>Avg Message: <span id="avg"></span></h5>
+        </div>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <div class="fixed-table-toolbar">
+        <div class="bars pull-left">
+            <div id="header-toolbar">
+                <button type="button" class="btn btn-default " id="next">Next</button>
+                <button type="button" class="btn btn-primary " id="current">Current</button>
+                <button type="button" class="btn btn-default " id="previous">Previous</button>
+            </div>
+        </div>
+    </div>
+    <table class="table table-hover table-striped"
+           id="topGodel"
+           data-toggle="table"
+           data-url="/Home/GetTop"
+           data-query-params="postQueryParams"
+           data-method="post"
+           data-content-type="application/x-www-form-urlencoded"
+           data-side-pagination="server"
+           data-pagination="true"
+           data-page-size="10"
+           data-page-list="[10, 20, 50, 100, 200]"
+           data-sort-order="desc"
+           data-sort-name="total_just_text"
+           data-striped="true"
+           data-show-loading="true"
+           data-cache="false">
+        <thead>
+            <tr>
+                <th data-field="RowNum" data-halign="center">#</th>
+                <th data-field="FullName" data-halign="center">Person</th>
+                <th data-field="Author" data-formatter="authorFormatter" data-halign="center">Skype ID</th>
+                <th data-field="count" data-formatter="numberFormatter" data-sortable="true" data-align="right" data-halign="center">Messages<br />Count</th>
+                <th data-field="total_just_text" data-formatter="numberFormatter" data-sortable="true" data-align="right" data-halign="center">Messages<br />Length</th>
+                <th data-field="min_just_text" data-formatter="numberFormatter" data-sortable="true" data-align="right" data-halign="center">Min<br />Message</th>
+                <th data-field="max_just_text" data-formatter="numberFormatter" data-sortable="true" data-align="right" data-halign="center">Max<br />Message</th>
+                <th data-field="avg_just_text" data-formatter="numberFormatter" data-sortable="true" data-align="right" data-halign="center">Avg<br />Message</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+@section scripts
+{
+    <script src="~/bundles/indexView"></script>
+}
