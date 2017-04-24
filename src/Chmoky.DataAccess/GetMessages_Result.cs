@@ -17,14 +17,12 @@ namespace Chmoky.DataAccess
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public Nullable<System.DateTime> timestamp { get; set; }
-        public string edited_by { get; set; }
-        public Nullable<System.DateTime> edited_timestamp { get; set; }
         public Nullable<int> type { get; set; }
         public string identities { get; set; }
-        public string original { get; set; }
-        public string just_text { get; set; }
-        public Nullable<long> len_original { get; set; }
         public Nullable<long> len_just_text { get; set; }
-        public string DispNames { get; set; }
+        public string just_html_text { get; set; }
+        public int RowNum { get; set; }
+        public string author { get; set; }
+        public string DispName { get; set; }
     }
 }

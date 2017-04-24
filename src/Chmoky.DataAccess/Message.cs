@@ -26,5 +26,6 @@ namespace Chmoky.DataAccess
         public string just_text { get; set; }
         public Nullable<long> len_just_text { get; set; }
         public Nullable<long> len_original { get; set; }
+        public string just_html_text { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 
 
 
+
 -- =============================================
 -- Author:		P.Shyrko
 -- Create date: 2017-03-31
@@ -40,18 +41,16 @@ BEGIN
 		AND (@enddate IS NULL OR [timestamp] <= @enddate)
 
 	SELECT
-	   [id]
+	   1000 AS [RowNum]
+	  ,[id]
       ,s.[FirstName]
 	  ,s.[LastName]
-	  ,a.[DispNames]
-      ,[timestamp]
-      ,[edited_by]
-      ,[edited_timestamp]
+	  ,m.[author] 
+	  ,a.[DispNames] AS [DispName]	  
+      ,[timestamp]    
       ,[type]
       ,[identities]
-      ,[body_xml] as [original]
-      ,[just_text]
-      ,[len_original]
+      ,[just_html_text]
       ,[len_just_text]
 	FROM [dbo].[Messages] m 
 	    INNER JOIN [dbo].[vAuthorNames] a ON m.[author] = a.[author]

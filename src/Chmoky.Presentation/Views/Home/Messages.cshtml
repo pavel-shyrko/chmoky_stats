@@ -1,12 +1,12 @@
 ﻿@{
-    ViewBag.Title = "Top 10";
+    ViewBag.Title = "Messages";
 }
 <h2>@ViewBag.Title</h2>
 
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-6">
-            <h5>Participants: <span id="participants"></span></h5>
+            <h5>Participant: <span id="participant"></span></h5>
             <h5>Messages Count: <span id="count"></span></h5>
             <h5>Messages Length: <span id="total"></span></h5>
         </div>
@@ -31,13 +31,12 @@
     <table class="table table-hover table-striped"
            id="topGodel"
            data-toggle="table"
-           data-url="/Home/GetTop"
            data-query-params="postQueryParams"
            data-method="post"
            data-content-type="application/x-www-form-urlencoded"
            data-side-pagination="server"
            data-pagination="true"
-           data-page-size="10"
+           data-page-size="20"
            data-page-list="[10, 20, 50, 100, 200]"
            data-sort-order="desc"
            data-sort-name="total_just_text"
@@ -46,14 +45,26 @@
            data-cache="false">
         <thead>
             <tr>
+                @*<th data-field="id" data-halign="center">id</th>*@
+                @* move to header
+                    <th data-field="FirstName" data-halign="center">FirstName</th>
+                    <th data-field="LastName" data-halign="center">LastName</th>
+                    <th data-field="DispNames" data-halign="center">DispNames</th>
+                    *@
                 <th data-field="RowNum" data-halign="center">#</th>
                 <th data-field="FullName" data-halign="center">Person</th>
                 <th data-field="Author" data-formatter="authorFormatter" data-halign="center">Skype ID</th>
-                <th data-field="count" data-formatter="numberFormatter" data-sortable="true" data-align="right" data-halign="center">Messages<br />Count</th>
-                <th data-field="total_just_text" data-formatter="numberFormatter" data-sortable="true" data-align="right" data-halign="center">Messages<br />Length</th>
-                <th data-field="min_just_text" data-formatter="numberFormatter" data-sortable="true" data-align="right" data-halign="center">Min<br />Message</th>
-                <th data-field="max_just_text" data-formatter="numberFormatter" data-sortable="true" data-align="right" data-halign="center">Max<br />Message</th>
-                <th data-field="avg_just_text" data-formatter="numberFormatter" data-sortable="true" data-align="right" data-halign="center">Avg<br />Message</th>
+                <th data-field="timestamp" data-formatter="dateFormatter" data-sortable="true" data-halign="center" data-align="center">Time</th>
+                <th data-field="len_just_text" data-formatter="numberFormatter" data-sortable="true" data-align="right" data-halign="center">Len</th>
+                <th data-field="just_html_text" data-formatter="textFormatter" data-halign="center">Message</th>
+
+                @*<th data-field="edited_by" data-halign="center">edited_by</th>
+                <th data-field="edited_timestamp" data-halign="center">edited_timestamp</th>*@
+                <th data-field="type" data-halign="center">type</th>
+                <th data-field="identities" data-halign="center">identities</th>
+                
+                @*<th data-field="len_original" data-halign="center">len_original</th>*@
+                
             </tr>
         </thead>
     </table>
@@ -61,5 +72,165 @@
 
 @section scripts
 {
-    <script src="~/bundles/indexView"></script>
+    <script src="~/Scripts/date.js"></script>
+    <script>
+        var selectedMonth = Date.today().add(-1).month();
+
+        $topGodel = $('#topGodel');
+
+        function getCaptionFromDate(date) {
+            return date.getMonthName(true) + " " + date.getFullYear();
+        }
+
+        function changeButtonsCaptions() {
+            $('#current').html("Statistics for " + getCaptionFromDate(selectedMonth));
+
+            $('#previous').html(getCaptionFromDate(new Date(selectedMonth).add(-1).month()));
+
+            $('#next').html(getCaptionFromDate(new Date(selectedMonth).add(1).month()));
+        }
+
+        function postQueryParams(params) {
+            var urlVars = getUrlVars();
+            var author = urlVars['author'];
+            params.currentDate = selectedMonth.toString("yyyy-MM-dd HH:mm");
+            params.author = author;
+            return params;
+        }
+
+        function encode(value) {
+            return value.replace(/"/g, '\\"').replace(/'/g, "\\'");
+        }
+
+        function textFormatter(value) {
+            //if (value == null) return null;
+            //var result = value.replace(/""/g, "'");
+            //return result;
+            return value;
+        }
+
+        function authorFormatter(value) {
+            return '<a data-toggle="popover" data-trigger="hover" href="/Home/Messages?author=' + value.SkypeID + '" data-content="'
+                + value.SkypeNames + '" title= "Skype Name" data-html="true" class="" >' + value.SkypeID + '</a>';
+        }
+
+        function dateFormatter(value) {
+            if (value === null) return null;
+            var date = new Date(parseInt(value.substr(6)));
+            return date.toString("HH:mm:ss dd/MM/yy");
+        }
+
+        function numberFormatter(value) {
+            if (value === null) return null;
+            return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        function getUrlVars() {
+            var vars = [], hash;
+            var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+            for (var i = 0; i < hashes.length; i++) {
+                hash = hashes[i].split('=');
+                vars.push(hash[0]);
+                vars[hash[0]] = hash[1];
+            }
+            return vars;
+        }
+
+        function setUrlVars() {
+            if (history.pushState) {
+                var options = $topGodel.bootstrapTable('getOptions');
+                params = postQueryParams(options);
+                var author = '';
+                if (params.author != undefined) {
+                    author = params.author + '&';
+                }
+                var query = author
+                    + 'month=' + params.currentDate.substring(0, 7)
+                    + '&sortName=' + params.sortName
+                    + '&sortOrder=' + params.sortOrder
+                    + '&page=' + params.pageNumber
+                    + '&size=' + params.pageSize;
+                var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + query;
+                window.history.pushState({ path: newurl }, '', newurl);
+            }
+        }
+
+        function setTableOptionsByUrlVars() {
+            var urlVars = getUrlVars();
+            var month = urlVars['month'];
+            var page = urlVars['page'];
+            var size = urlVars['size'];
+            var sort = urlVars['sortName'];
+            var order = urlVars['sortOrder'];
+
+            if (month != undefined) {
+                var currentMonth = new Date(month + "-01");
+                if (!isNaN(currentMonth)) selectedMonth = currentMonth;
+            }
+
+            // check that pageNumber is valid
+            if (page != undefined && $.isNumeric(page)) {
+                // pageNumber has to be numeric to be highlighted by bootstrap table
+                $topGodel.bootstrapTable('refreshOptions', { pageNumber: parseInt(page) });
+            }
+
+            // check that pageSize is valid
+            if (size != undefined && $.isNumeric(size)) {
+                $topGodel.bootstrapTable('refreshOptions', { pageSize: size });
+            }
+
+            // can the table be sorted by specified fields
+            if (sort != undefined) {
+                sort = sort.toLowerCase();
+                $.each($topGodel.bootstrapTable('getOptions').columns[0], function (index, column) {
+                    if (column.sortable && column.field.toLowerCase() == sort) {
+                        $topGodel.bootstrapTable('refreshOptions', { sortName: sort });
+                    }
+                });
+            }
+
+            // is sort order valid
+            if (order != undefined) {
+                order = order.toLowerCase();
+                if (order == "asc" || order == "desc") {
+                    $topGodel.bootstrapTable('refreshOptions', { sortOrder: order });
+                }
+            }
+        }
+
+        $(document).ready(function () {
+            $topGodel
+                .on('all.bs.table', function (e, name, args) {
+                    $('[data-toggle="tooltip"]').tooltip();
+                    $('[data-toggle="popover"]').popover();
+                })
+                .on('load-success.bs.table', function (e, data) {
+                    //$('#participants').html(numberFormatter(data.total));
+                    $('#total').html(numberFormatter(data.textLength));
+                    $('#count').html(numberFormatter(data.total));
+                    $('#min').html(numberFormatter(data.min));
+                    $('#max').html(numberFormatter(data.max));
+                    $('#avg').html(numberFormatter(data.avg));
+                    setUrlVars();
+                    changeButtonsCaptions();
+                });
+
+            $('#previous').click(function () {
+                selectedMonth = new Date(selectedMonth).add(-1).month();
+                $topGodel.bootstrapTable('refresh');
+            });
+
+            $('#next').click(function () {
+                selectedMonth = new Date(selectedMonth).add(1).month();
+                $topGodel.bootstrapTable('refresh');
+            });
+
+            setTableOptionsByUrlVars();
+
+            changeButtonsCaptions();
+
+            $topGodel.bootstrapTable('refresh', { url: "/Home/GetMessages" })
+        });
+
+    </script>
 }

@@ -9,10 +9,13 @@
     [body_xml]         NVARCHAR (MAX) NULL,
     [identities]       NVARCHAR (256) NULL,
     [just_text]        AS             ([dbo].[NormalizeString]([body_xml])) PERSISTED,
+    [just_html_text]   AS             ([dbo].[NormalizeStringKeepHtml]([body_xml])) PERSISTED,
     [len_just_text]    AS             (len([dbo].[NormalizeString]([body_xml]))) PERSISTED,
     [len_original]     AS             (len([body_xml])),
     CONSTRAINT [PK_Messages] PRIMARY KEY CLUSTERED ([id] ASC)
 );
+
+
 
 
 

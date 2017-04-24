@@ -1,6 +1,4 @@
 ﻿
-
-
 -- =============================================
 -- Author:		P.Shyrko
 -- Create date: 2017-03-31
@@ -44,10 +42,10 @@ BEGIN
 			,AVG([len_just_text]) AS [avg_just_text]
 		FROM [dbo].[Messages] m		
 		WHERE
-			[body_xml] IS NOT NULL 
-			AND [body_xml] <> ''
-			AND (@startdate IS NULL OR [timestamp] >= @startdate)
-			AND (@enddate IS NULL OR [timestamp] < @enddate)
+			--[body_xml] IS NOT NULL AND
+			--[body_xml] <> '' AND
+			(@startdate IS NULL OR [timestamp] >= @startdate) AND
+			(@enddate IS NULL OR [timestamp] < @enddate)
 		GROUP BY [author]) m
 
 	DECLARE @orderBy nvarchar(max);
@@ -93,14 +91,14 @@ BEGIN
 			,AVG([len_just_text]) AS [avg_just_text]
 		FROM [dbo].[Messages] m		
 		WHERE
-			[body_xml] IS NOT NULL 
-			AND [body_xml] <> ''''
+			--[body_xml] IS NOT NULL 
+			--AND [body_xml] <> ''''
 			'
 			
 			+
 			
 			CASE 
-				WHEN @startdate IS NOT NULL THEN 'AND ([timestamp] >= N''' + convert(varchar(25),@startdate,121) + ''')
+				WHEN @startdate IS NOT NULL THEN '/*AND*/ ([timestamp] >= N''' + convert(varchar(25),@startdate,121) + ''')
 			'
 				ELSE ''
 			END

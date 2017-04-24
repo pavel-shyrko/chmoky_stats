@@ -21,6 +21,7 @@
           <Property Name="just_text" Type="nvarchar(max)" StoreGeneratedPattern="Computed" />
           <Property Name="len_just_text" Type="bigint" StoreGeneratedPattern="Computed" />
           <Property Name="len_original" Type="bigint" StoreGeneratedPattern="Computed" />
+          <Property Name="just_html_text" Type="nvarchar(max)" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="SkypeUsers">
           <Key>
@@ -120,6 +121,7 @@
           <Property Name="just_text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="len_just_text" Type="Int64" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="len_original" Type="Int64" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="just_html_text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" annotation:StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="SkypeUser">
           <Key>
@@ -144,15 +146,13 @@
           <Property Type="String" Name="FirstName" Nullable="true" MaxLength="100" />
           <Property Type="String" Name="LastName" Nullable="true" MaxLength="100" />
           <Property Type="DateTime" Name="timestamp" Nullable="true" Precision="23" />
-          <Property Type="String" Name="edited_by" Nullable="true" MaxLength="128" />
-          <Property Type="DateTime" Name="edited_timestamp" Nullable="true" Precision="23" />
           <Property Type="Int32" Name="type" Nullable="true" />
           <Property Type="String" Name="identities" Nullable="true" MaxLength="256" />
-          <Property Type="String" Name="original" Nullable="true" />
-          <Property Type="String" Name="just_text" Nullable="true" />
-          <Property Type="Int64" Name="len_original" Nullable="true" />
           <Property Type="Int64" Name="len_just_text" Nullable="true" />
-          <Property Type="String" Name="DispNames" Nullable="true" />
+          <Property Type="String" Name="just_html_text" Nullable="true" />
+          <Property Type="Int32" Name="RowNum" Nullable="false" />
+          <Property Type="String" Name="author" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="DispName" Nullable="true" />
         </ComplexType>
         <ComplexType Name="GetStatistics_Result">
           <Property Type="Int64" Name="RowNum" Nullable="true" />
@@ -175,6 +175,7 @@
           <EntitySetMapping Name="Messages">
             <EntityTypeMapping TypeName="ChmokyModel.Message">
               <MappingFragment StoreEntitySet="Messages">
+                <ScalarProperty Name="just_html_text" ColumnName="just_html_text" />
                 <ScalarProperty Name="len_original" ColumnName="len_original" />
                 <ScalarProperty Name="len_just_text" ColumnName="len_just_text" />
                 <ScalarProperty Name="just_text" ColumnName="just_text" />
@@ -216,15 +217,13 @@
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="timestamp" ColumnName="timestamp" />
-                <ScalarProperty Name="edited_by" ColumnName="edited_by" />
-                <ScalarProperty Name="edited_timestamp" ColumnName="edited_timestamp" />
                 <ScalarProperty Name="type" ColumnName="type" />
                 <ScalarProperty Name="identities" ColumnName="identities" />
-                <ScalarProperty Name="original" ColumnName="original" />
-                <ScalarProperty Name="just_text" ColumnName="just_text" />
-                <ScalarProperty Name="len_original" ColumnName="len_original" />
                 <ScalarProperty Name="len_just_text" ColumnName="len_just_text" />
-                <ScalarProperty Name="DispNames" ColumnName="DispNames" />
+                <ScalarProperty Name="just_html_text" ColumnName="just_html_text" />
+                <ScalarProperty Name="RowNum" ColumnName="RowNum" />
+                <ScalarProperty Name="author" ColumnName="author" />
+                <ScalarProperty Name="DispName" ColumnName="DispName" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

@@ -59,7 +59,7 @@ namespace Chmoky.Presentation.Controllers
             }
         }
 
-        public JsonResult GetMessages(string currentDate, int offset, int limit, string search, string sort, string order)
+        public JsonResult GetMessages(string author, string currentDate, int offset, int limit, string search, string sort, string order)
         {
             var previous = DateTime.Parse(currentDate);
 
@@ -77,23 +77,21 @@ namespace Chmoky.Presentation.Controllers
             {
                 var total = new ObjectParameter("Total", typeof(int));
                 var textLength = new ObjectParameter("TextLength", typeof(int));
-                var count = new ObjectParameter("Count", typeof(int));
                 var min = new ObjectParameter("Min", typeof(int));
                 var max = new ObjectParameter("Max", typeof(int));
                 var avg = new ObjectParameter("Avg", typeof(int));
 
-                var records = ctx.GetStatistics(startDate, endDate, offset, limit, sort, order,
-                    total, textLength, count, min, max, avg).ToList();
+                var records = ctx.GetMessages(author, startDate, endDate, offset, limit, /*sort, order,*/
+                    total, textLength, min, max, avg).ToList();
 
-                var model = new Models.TopModel
+                var model = new Models.MessageModel
                 {
-                    count = count.Value as int?,
                     textLength = textLength.Value as int?,
                     min = min.Value as int?,
                     max = max.Value as int?,
                     avg = avg.Value as int?,
                     total = total.Value as int?,
-                    rows = Mapper.Map<IEnumerable<Models.TopRecordModel>>(records),
+                    rows = Mapper.Map<IEnumerable<Models.MessageRecordModel>>(records),
                 };
 
                 return Json(model, JsonRequestBehavior.DenyGet);

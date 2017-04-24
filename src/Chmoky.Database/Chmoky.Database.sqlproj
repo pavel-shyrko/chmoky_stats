@@ -90,5 +90,6 @@
     <Build Include="dbo\Stored Procedures\FindAuthor.sql" />
     <Build Include="dbo\Stored Procedures\GetStatistics.sql" />
     <Build Include="dbo\Stored Procedures\GetMessages.sql" />
+    <Build Include="dbo\Functions\NormalizeStringKeepHtml.sql" />
   </ItemGroup>
 </Project>
