@@ -1,5 +1,6 @@
 ﻿
 
+
 ---------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------
@@ -36,11 +37,9 @@ BEGIN
 		SET @Result = [dbo].[RemoveTagKeepInnerText](@Result, N'legacyquote')
 	END
 
-	SET @Result = REPLACE(@Result, N'<s raw_pre=""~"" raw_post=""~"">', N'<strike>');
+	SET @Result = REPLACE(@Result, N'<s raw_pre="~" raw_post="~">', N'<strike>');
 
 	SET @Result = REPLACE(@Result, N'</s>', N'</strike>');
-
-	SET @Result = REPLACE(@Result, N'""', N'''');
 	
 	RETURN @Result;
 
