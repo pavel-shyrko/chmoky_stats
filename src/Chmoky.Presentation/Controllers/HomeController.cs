@@ -110,7 +110,8 @@ namespace Chmoky.Presentation.Controllers
             using (var ctx = new Chmoky.DataAccess.ChmokyEntities())
             {
                 var authorDetails = ctx.FindAuthor(author).FirstOrDefault();
-                return Json(authorDetails, JsonRequestBehavior.DenyGet);
+                var result = Mapper.Map<Models.AuthorModel>(authorDetails);
+                return Json(result, JsonRequestBehavior.DenyGet);
             }
         }
     }

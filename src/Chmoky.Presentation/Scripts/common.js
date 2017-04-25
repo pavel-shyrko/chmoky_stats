@@ -26,12 +26,6 @@ function numberFormatter(value) {
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-function dateFormatter(value) {
-    if (value === null) return null;
-    var date = new Date(parseInt(value.substr(6)));
-    return date.toString("HH:mm:ss dd/MM/yy");
-}
-
 function validateAndSetTableOptions(table, page, size, sort, order) {
     // check that pageNumber is valid
     if (page != undefined && $.isNumeric(page)) {
@@ -71,7 +65,4 @@ function onAuthorClick(author) {
     return false;
 }
 
-function authorFormatter(value) {
-    return '<a data-toggle="popover" data-trigger="hover" onclick="onAuthorClick(\'' + encode(value.SkypeID) + '\')" data-content="'
-        + value.SkypeNames + '" title= "Skype Name" data-html="true" class="" >' + value.SkypeID + '</a>';
-}
+

@@ -10,7 +10,5 @@ namespace Chmoky.Presentation.Models
         public Nullable<System.DateTime> timestamp { get; set; }
         public string text { get; set; }
         public Nullable<long> len { get; set; }
-        public Nullable<int> type { get; set; }
-        public string identities { get; set; }
     }
 }

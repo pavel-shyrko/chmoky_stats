@@ -43,6 +43,11 @@ function setTableOptionsByUrlVars() {
     validateAndSetTableOptions($topGodel, page, size, sort, order);
 }
 
+function authorFormatter(value) {
+    return '<a data-toggle="popover" data-trigger="hover" onclick="onAuthorClick(\'' + encode(value.SkypeID) + '\')" data-content="'
+        + value.SkypeNames + '" title= "Skype Name" data-html="true" class="" >' + value.SkypeID + '</a>';
+}
+
 $(document).ready(function () {
     $topGodel
         .on('all.bs.table', function (e, name, args) {
