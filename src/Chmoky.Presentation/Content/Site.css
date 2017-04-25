@@ -35,3 +35,7 @@ a:hover {
 .toggleDisplay.in {
     display: table-cell;
 }
+
+#header-toolbar{
+    margin-bottom: 5px;
+}
