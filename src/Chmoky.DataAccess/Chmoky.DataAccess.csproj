@@ -66,6 +66,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ChmokyModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="FindAuthor_Result.cs">
+      <DependentUpon>ChmokyModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="GetMessages_Result.cs">
       <DependentUpon>ChmokyModel.tt</DependentUpon>
     </Compile>

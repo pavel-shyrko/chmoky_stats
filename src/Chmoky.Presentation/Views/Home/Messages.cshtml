@@ -6,7 +6,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-6">
-            <h5 id="h5participants">Participant: <span id="participants"></span></h5>
+            <h5 id="h5participants">Participants: <span id="participants"></span></h5>
             <h5>Messages Count: <span id="count"></span></h5>
             <h5>Messages Length: <span id="length"></span></h5>
         </div>
@@ -50,7 +50,7 @@
                 <th data-field="Author" data-formatter="authorFormatter" data-halign="center" class="toggleDisplay">Skype ID</th>
                 <th data-field="timestamp" data-formatter="dateFormatter" data-sortable="true" data-halign="center" data-align="center">Time</th>
                 <th data-field="len_just_text" data-formatter="numberFormatter" data-sortable="true" data-align="right" data-halign="center">Len</th>
-                <th data-field="just_html_text" data-formatter="textFormatter" data-halign="center">Message</th>
+                <th data-field="just_html_text" data-halign="center">Message</th>
                 <th data-field="type" data-halign="center">type</th>
                 <th data-field="identities" data-halign="center">identities</th>
             </tr>
@@ -79,13 +79,6 @@
             params.currentDate = selectedMonth.toString("yyyy-MM-dd HH:mm");
             params.author = author;
             return params;
-        }
-
-        function textFormatter(value) {
-            //if (value == null) return null;
-            //var result = value.replace(/""/g, "'");
-            //return result;
-            return value;
         }
 
         function setUrlVars() {
@@ -127,6 +120,14 @@
             validateAndSetTableOptions($messages, page, size, sort, order);
         }
 
+        function setParticipantsByUrlVars() {
+            var urlVars = getUrlVars();
+            var author = urlVars['author'];
+            if (author != undefined) {
+                $('#h5participants').text("Participant: " + author);
+            }
+        }
+
         $(document).ready(function () {
             $messages
                 .on('all.bs.table', function (e, name, args) {
@@ -134,12 +135,8 @@
                     $('[data-toggle="popover"]').popover();
                 })
                 .on('load-success.bs.table', function (e, data) {
-                    if (data.total == 1) {
-                        $('#h5participants').html('Participant: ');
-                    }
-                    else if (data.total > 1) {
-                        $('#h5participants').html('Participants: ');
-                        $('#participants').html(numberFormatter(data.total));
+                    if ($('#participants').length == 1) {
+                        $('#participants').html(numberFormatter(data.participants));
                     }
                     $('#length').html(numberFormatter(data.textLength));
                     $('#count').html(numberFormatter(data.count));
@@ -159,6 +156,8 @@
                 selectedMonth = new Date(selectedMonth).add(1).month();
                 $messages.bootstrapTable('refresh');
             });
+
+            setParticipantsByUrlVars();
 
             setTableOptionsByUrlVars();
 

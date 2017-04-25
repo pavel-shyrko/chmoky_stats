@@ -34,7 +34,7 @@ namespace Chmoky.Presentation.Controllers
 
             using (var ctx = new Chmoky.DataAccess.ChmokyEntities())
             {
-                var total = new ObjectParameter("Total", typeof(int));
+                var participants = new ObjectParameter("Participants", typeof(int));
                 var textLength = new ObjectParameter("TextLength", typeof(int));
                 var count = new ObjectParameter("Count", typeof(int));
                 var min = new ObjectParameter("Min", typeof(int));
@@ -42,16 +42,17 @@ namespace Chmoky.Presentation.Controllers
                 var avg = new ObjectParameter("Avg", typeof(int));
 
                 var records = ctx.GetStatistics(startDate, endDate, offset, limit, sort, order,
-                    total, textLength, count, min, max, avg).ToList();
+                    participants, textLength, count, min, max, avg).ToList();
 
                 var model = new Models.TopModel
                 {
+                    participants = participants.Value as int?,
                     count = count.Value as int?,
                     textLength = textLength.Value as int?,
                     min = min.Value as int?,
                     max = max.Value as int?,
                     avg = avg.Value as int?,
-                    total = total.Value as int?,
+                    total = participants.Value as int?,
                     rows = Mapper.Map<IEnumerable<Models.TopRecordModel>>(records),
                 };
 
@@ -75,7 +76,7 @@ namespace Chmoky.Presentation.Controllers
 
             using (var ctx = new Chmoky.DataAccess.ChmokyEntities())
             {
-                var total = new ObjectParameter("Total", typeof(int));
+                var participants = new ObjectParameter("Participants", typeof(int));
                 var textLength = new ObjectParameter("TextLength", typeof(int));
                 var count = new ObjectParameter("Count", typeof(int));
                 var min = new ObjectParameter("Min", typeof(int));
@@ -83,16 +84,17 @@ namespace Chmoky.Presentation.Controllers
                 var avg = new ObjectParameter("Avg", typeof(int));
 
                 var records = ctx.GetMessages(author, startDate, endDate, offset, limit, /*sort, order,*/
-                    total, textLength, count, min, max, avg).ToList();
+                    participants, textLength, count, min, max, avg).ToList();
 
                 var model = new Models.MessageModel
                 {
+                    participants = participants.Value as int ?,
                     count = count.Value as int?,
                     textLength = textLength.Value as int?,
                     min = min.Value as int?,
                     max = max.Value as int?,
                     avg = avg.Value as int?,
-                    total = total.Value as int?,
+                    total = count.Value as int?,
                     rows = Mapper.Map<IEnumerable<Models.MessageRecordModel>>(records),
                 };
 

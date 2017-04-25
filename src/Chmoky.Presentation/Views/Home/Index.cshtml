@@ -116,7 +116,7 @@
                     $('[data-toggle="popover"]').popover();
                 })
                 .on('load-success.bs.table', function (e, data) {
-                    $('#participants').html(numberFormatter(data.total));
+                    $('#participants').html(numberFormatter(data.participants));
                     $('#length').html(numberFormatter(data.textLength));
                     $('#count').html(numberFormatter(data.count));
                     $('#min').html(numberFormatter(data.min));

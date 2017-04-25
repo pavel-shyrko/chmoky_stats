@@ -1,12 +1,10 @@
 ﻿
-
-
 -- =============================================
 -- Author:		P.Shyrko
 -- Create date: 2017-04-03
 -- =============================================
 CREATE PROCEDURE [dbo].[FindAuthor]
-	@Input nvarchar(255)
+	@author nvarchar(255)
 AS
 BEGIN
 
@@ -14,21 +12,27 @@ BEGIN
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 	
-	DECLARE @Input1 nvarchar(257) = '%' + @Input + '%'
+	--DECLARE @Input1 nvarchar(257) = '%' + @Input + '%'
 
-	SELECT DISTINCT
-		s.*
+	SELECT 
+		 a.[author]
+		,a.[DispNames]
+		,[FirstName]
+		,[LastName]
+		,[DispName]
+		,[CompanyDepartment]
+		,[JobTitle]
+		,[Dismissed]
+		,[City]
+		,[Country]
+		,[Account]
+		,[EmailDisplayName]
+		,[ManagersName]
+		,[OfficeLocation]
 	FROM
-		[dbo].[SkypeUsers] s
-		INNER JOIN [dbo].[vAuthorDisplayNames] d ON s.[author] = d.[author] 
+		[dbo].[vAuthorNames] a
+		LEFT OUTER JOIN [dbo].[SkypeUsers] s ON a.[author] = s.[author] 
 	WHERE
-		@Input IS NULL 
-		OR (s.[FirstName] LIKE @Input1)
-		OR (s.[LastName] LIKE @Input1)
-		OR (s.[author] LIKE @Input1)
-		OR (s.[account] LIKE @Input1)
-		OR (d.[from_dispname] LIKE @Input1)
+		a.[author] LIKE @author
 	ORDER BY s.[LastName], s.[FirstName] 
-
-
 END

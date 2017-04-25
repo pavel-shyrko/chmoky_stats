@@ -5,6 +5,7 @@ namespace Chmoky.Presentation.Models
 {
     public class MessageModel
     {
+        public Nullable<int> participants { get; set; }
         public Nullable<int> count { get; set; }
         public Nullable<int> textLength { get; set; }
         public Nullable<int> min { get; set; }

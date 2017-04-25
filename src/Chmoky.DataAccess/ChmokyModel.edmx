@@ -41,13 +41,16 @@
           <Property Name="ManagersName" Type="nvarchar" MaxLength="255" />
           <Property Name="OfficeLocation" Type="nvarchar" MaxLength="255" />
         </EntityType>
+        <Function Name="FindAuthor" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="author" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="GetMessages" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="author" Type="nvarchar" Mode="In" />
           <Parameter Name="startdate" Type="datetime" Mode="In" />
           <Parameter Name="enddate" Type="datetime" Mode="In" />
           <Parameter Name="OffSet" Type="int" Mode="In" />
           <Parameter Name="Limit" Type="int" Mode="In" />
-          <Parameter Name="Total" Type="int" Mode="InOut" />
+          <Parameter Name="Participants" Type="int" Mode="InOut" />
           <Parameter Name="TextLength" Type="int" Mode="InOut" />
           <Parameter Name="Count" Type="int" Mode="InOut" />
           <Parameter Name="Min" Type="int" Mode="InOut" />
@@ -61,7 +64,7 @@
           <Parameter Name="Limit" Type="int" Mode="In" />
           <Parameter Name="SortColumn" Type="nvarchar" Mode="In" />
           <Parameter Name="SortDirection" Type="nvarchar" Mode="In" />
-          <Parameter Name="Total" Type="int" Mode="InOut" />
+          <Parameter Name="Participants" Type="int" Mode="InOut" />
           <Parameter Name="TextLength" Type="int" Mode="InOut" />
           <Parameter Name="Count" Type="int" Mode="InOut" />
           <Parameter Name="Min" Type="int" Mode="InOut" />
@@ -79,19 +82,8 @@
         <EntityContainer Name="ChmokyEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Messages" EntityType="ChmokyModel.Message" />
           <EntitySet Name="SkypeUsers" EntityType="ChmokyModel.SkypeUser" />
-          <FunctionImport Name="GetStatistics" ReturnType="Collection(ChmokyModel.GetStatistics_Result)">
-            <Parameter Name="startdate" Mode="In" Type="DateTime" />
-            <Parameter Name="enddate" Mode="In" Type="DateTime" />
-            <Parameter Name="OffSet" Mode="In" Type="Int32" />
-            <Parameter Name="Limit" Mode="In" Type="Int32" />
-            <Parameter Name="SortColumn" Mode="In" Type="String" />
-            <Parameter Name="SortDirection" Mode="In" Type="String" />
-            <Parameter Name="Total" Mode="InOut" Type="Int32" />
-            <Parameter Name="TextLength" Mode="InOut" Type="Int32" />
-            <Parameter Name="Count" Mode="InOut" Type="Int32" />
-            <Parameter Name="Min" Mode="InOut" Type="Int32" />
-            <Parameter Name="Max" Mode="InOut" Type="Int32" />
-            <Parameter Name="Avg" Mode="InOut" Type="Int32" />
+          <FunctionImport Name="FindAuthor" ReturnType="Collection(ChmokyModel.FindAuthor_Result)">
+            <Parameter Name="author" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="GetMessages" ReturnType="Collection(ChmokyModel.GetMessages_Result)">
             <Parameter Name="author" Mode="In" Type="String" />
@@ -99,7 +91,21 @@
             <Parameter Name="enddate" Mode="In" Type="DateTime" />
             <Parameter Name="OffSet" Mode="In" Type="Int32" />
             <Parameter Name="Limit" Mode="In" Type="Int32" />
-            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="Participants" Mode="InOut" Type="Int32" />
+            <Parameter Name="TextLength" Mode="InOut" Type="Int32" />
+            <Parameter Name="Count" Mode="InOut" Type="Int32" />
+            <Parameter Name="Min" Mode="InOut" Type="Int32" />
+            <Parameter Name="Max" Mode="InOut" Type="Int32" />
+            <Parameter Name="Avg" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetStatistics" ReturnType="Collection(ChmokyModel.GetStatistics_Result)">
+            <Parameter Name="startdate" Mode="In" Type="DateTime" />
+            <Parameter Name="enddate" Mode="In" Type="DateTime" />
+            <Parameter Name="OffSet" Mode="In" Type="Int32" />
+            <Parameter Name="Limit" Mode="In" Type="Int32" />
+            <Parameter Name="SortColumn" Mode="In" Type="String" />
+            <Parameter Name="SortDirection" Mode="In" Type="String" />
+            <Parameter Name="Participants" Mode="InOut" Type="Int32" />
             <Parameter Name="TextLength" Mode="InOut" Type="Int32" />
             <Parameter Name="Count" Mode="InOut" Type="Int32" />
             <Parameter Name="Min" Mode="InOut" Type="Int32" />
@@ -154,6 +160,22 @@
           <Property Type="Int64" Name="min_just_text" Nullable="true" />
           <Property Type="Int64" Name="max_just_text" Nullable="true" />
           <Property Type="Int64" Name="avg_just_text" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="FindAuthor_Result">
+          <Property Type="String" Name="author" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="DispNames" Nullable="true" />
+          <Property Type="String" Name="FirstName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="LastName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="DispName" Nullable="true" MaxLength="256" />
+          <Property Type="String" Name="CompanyDepartment" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="JobTitle" Nullable="true" MaxLength="255" />
+          <Property Type="Boolean" Name="Dismissed" Nullable="true" />
+          <Property Type="String" Name="City" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Country" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="Account" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="EmailDisplayName" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="ManagersName" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="OfficeLocation" Nullable="true" MaxLength="255" />
         </ComplexType>
         <ComplexType Name="GetMessages_Result">
           <Property Type="Int32" Name="RowNum" Nullable="false" />
@@ -212,19 +234,23 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="GetStatistics" FunctionName="ChmokyModel.Store.GetStatistics" >
+          <FunctionImportMapping FunctionImportName="FindAuthor" FunctionName="ChmokyModel.Store.FindAuthor">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="ChmokyModel.GetStatistics_Result">
-                <ScalarProperty Name="RowNum" ColumnName="RowNum" />
+              <ComplexTypeMapping TypeName="ChmokyModel.FindAuthor_Result">
+                <ScalarProperty Name="author" ColumnName="author" />
+                <ScalarProperty Name="DispNames" ColumnName="DispNames" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="DispName" ColumnName="DispName" />
-                <ScalarProperty Name="author" ColumnName="author" />
-                <ScalarProperty Name="count" ColumnName="count" />
-                <ScalarProperty Name="total_just_text" ColumnName="total_just_text" />
-                <ScalarProperty Name="min_just_text" ColumnName="min_just_text" />
-                <ScalarProperty Name="max_just_text" ColumnName="max_just_text" />
-                <ScalarProperty Name="avg_just_text" ColumnName="avg_just_text" />
+                <ScalarProperty Name="CompanyDepartment" ColumnName="CompanyDepartment" />
+                <ScalarProperty Name="JobTitle" ColumnName="JobTitle" />
+                <ScalarProperty Name="Dismissed" ColumnName="Dismissed" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Account" ColumnName="Account" />
+                <ScalarProperty Name="EmailDisplayName" ColumnName="EmailDisplayName" />
+                <ScalarProperty Name="ManagersName" ColumnName="ManagersName" />
+                <ScalarProperty Name="OfficeLocation" ColumnName="OfficeLocation" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -242,6 +268,22 @@
                 <ScalarProperty Name="identities" ColumnName="identities" />
                 <ScalarProperty Name="just_html_text" ColumnName="just_html_text" />
                 <ScalarProperty Name="len_just_text" ColumnName="len_just_text" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetStatistics" FunctionName="ChmokyModel.Store.GetStatistics" >
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ChmokyModel.GetStatistics_Result">
+                <ScalarProperty Name="RowNum" ColumnName="RowNum" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="DispName" ColumnName="DispName" />
+                <ScalarProperty Name="author" ColumnName="author" />
+                <ScalarProperty Name="count" ColumnName="count" />
+                <ScalarProperty Name="total_just_text" ColumnName="total_just_text" />
+                <ScalarProperty Name="min_just_text" ColumnName="min_just_text" />
+                <ScalarProperty Name="max_just_text" ColumnName="max_just_text" />
+                <ScalarProperty Name="avg_just_text" ColumnName="avg_just_text" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

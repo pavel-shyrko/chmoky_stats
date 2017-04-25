@@ -14,7 +14,7 @@ CREATE PROCEDURE [dbo].[GetMessages]
 	@enddate datetime,
 	@OffSet int,
 	@Limit int,
-    @Total int out,
+    @Participants int out,
 	@TextLength int out,
 	@Count int out,
 	@Min int out,
@@ -30,7 +30,7 @@ BEGIN
 	-- please check this article https://sqlperformance.com/2012/08/t-sql-queries/conditional-order-by
 
 	SELECT
-		@Total = COUNT([author]),
+		@Participants = COUNT(DISTINCT [author]),
 		@Count = COUNT([ID]),
 		@TextLength	= SUM([len_just_text]),
 		@Min = MIN([len_just_text]),

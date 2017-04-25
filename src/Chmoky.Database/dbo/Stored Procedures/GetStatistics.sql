@@ -11,7 +11,7 @@ CREATE PROCEDURE [dbo].[GetStatistics]
 	@Limit int,
 	@SortColumn nvarchar(20),
 	@SortDirection nvarchar(10),
-	@Total int out,
+	@Participants int out,
 	@TextLength int out,
 	@Count int out,
 	@Min int out,
@@ -27,27 +27,18 @@ BEGIN
 	-- please check this article https://sqlperformance.com/2012/08/t-sql-queries/conditional-order-by
 
 	SELECT
-		@Total = COUNT([author]),
-		@Count = SUM([count]),
-		@TextLength	= SUM([total_just_text]),
-		@Min = MIN([min_just_text]),
-		@Max = MAX([max_just_text]),
-		@Avg = AVG([avg_just_text])
-	FROM
-		(SELECT
-			 [author]
-			,COUNT([ID]) AS [count]
-			,SUM([len_just_text]) AS [total_just_text]
-			,MIN([len_just_text]) AS [min_just_text]
-			,MAX([len_just_text]) AS [max_just_text]
-			,AVG([len_just_text]) AS [avg_just_text]
-		FROM [dbo].[Messages] m		
-		WHERE
-			--[body_xml] IS NOT NULL AND
-			--[body_xml] <> '' AND
-			(@startdate IS NULL OR [timestamp] >= @startdate) AND
-			(@enddate IS NULL OR [timestamp] < @enddate)
-		GROUP BY [author]) m
+		@Participants = COUNT(DISTINCT [author]),
+		@Count = COUNT([ID]),
+		@TextLength	= SUM([len_just_text]),
+		@Min = MIN([len_just_text]),
+		@Max = MAX([len_just_text]),
+		@Avg = AVG([len_just_text])
+	FROM [dbo].[Messages]
+	WHERE
+		--[body_xml] IS NOT NULL AND
+		--[body_xml] <> '' AND
+		(@startdate IS NULL OR [timestamp] >= @startdate) AND
+		(@enddate IS NULL OR [timestamp] < @enddate)
 
 	DECLARE @orderBy nvarchar(max);
 
