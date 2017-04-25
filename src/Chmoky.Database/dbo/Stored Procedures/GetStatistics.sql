@@ -1,5 +1,6 @@
 ﻿
 
+
 -- =============================================
 -- Author:		P.Shyrko
 -- Create date: 2017-03-31
@@ -48,10 +49,10 @@ BEGIN
 	
 	CASE 
 		WHEN @SortColumn LIKE 'count' THEN '[count]'
-		WHEN @SortColumn LIKE 'total_just_text' THEN '[total_just_text]'
-		WHEN @SortColumn LIKE 'min_just_text' THEN '[min_just_text]'
-		WHEN @SortColumn LIKE 'max_just_text' THEN '[max_just_text]'
-		WHEN @SortColumn LIKE 'avg_just_text' THEN '[avg_just_text]'
+		WHEN @SortColumn LIKE 'total' OR @SortColumn LIKE 'total_just_text' THEN '[total_just_text]'
+		WHEN @SortColumn LIKE 'min' OR @SortColumn LIKE 'min_just_text' THEN '[min_just_text]'
+		WHEN @SortColumn LIKE 'max' OR @SortColumn LIKE 'max_just_text' THEN '[max_just_text]'
+		WHEN @SortColumn LIKE 'avg' OR @SortColumn LIKE 'avg_just_text' THEN '[avg_just_text]'
 		ELSE '[total_just_text]'
 	END	
 	

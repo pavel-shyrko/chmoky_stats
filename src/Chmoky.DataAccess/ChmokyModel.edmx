@@ -166,7 +166,6 @@
           <Property Type="String" Name="DispNames" Nullable="true" />
           <Property Type="String" Name="FirstName" Nullable="true" MaxLength="100" />
           <Property Type="String" Name="LastName" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="DispName" Nullable="true" MaxLength="256" />
           <Property Type="String" Name="CompanyDepartment" Nullable="true" MaxLength="100" />
           <Property Type="String" Name="JobTitle" Nullable="true" MaxLength="255" />
           <Property Type="Boolean" Name="Dismissed" Nullable="true" />
@@ -241,7 +240,6 @@
                 <ScalarProperty Name="DispNames" ColumnName="DispNames" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="DispName" ColumnName="DispName" />
                 <ScalarProperty Name="CompanyDepartment" ColumnName="CompanyDepartment" />
                 <ScalarProperty Name="JobTitle" ColumnName="JobTitle" />
                 <ScalarProperty Name="Dismissed" ColumnName="Dismissed" />

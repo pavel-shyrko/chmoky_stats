@@ -18,6 +18,7 @@ namespace Chmoky.Presentation.Controllers
 
         public ActionResult Contact() { return View(); }
 
+        [HttpPost]
         public JsonResult GetTop(string currentDate, int offset, int limit, string search, string sort, string order)
         {
             var previous = DateTime.Parse(currentDate);
@@ -60,6 +61,7 @@ namespace Chmoky.Presentation.Controllers
             }
         }
 
+        [HttpPost]
         public JsonResult GetMessages(string author, string currentDate, int offset, int limit, string search, string sort, string order)
         {
             var previous = DateTime.Parse(currentDate);
@@ -99,6 +101,16 @@ namespace Chmoky.Presentation.Controllers
                 };
 
                 return Json(model, JsonRequestBehavior.DenyGet);
+            }
+        }
+
+        [HttpPost]
+        public JsonResult GetAuthorDetails(string author)
+        {
+            using (var ctx = new Chmoky.DataAccess.ChmokyEntities())
+            {
+                var authorDetails = ctx.FindAuthor(author).FirstOrDefault();
+                return Json(authorDetails, JsonRequestBehavior.DenyGet);
             }
         }
     }

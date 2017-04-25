@@ -35,6 +35,7 @@ namespace Chmoky.Presentation
 
             bundles.Add(new ScriptBundle("~/bundles/indexView").Include(
                         "~/Scripts/date.js",
+                        "~/Scripts/common.js",
                         "~/Scripts/indexView.js"
                         ));
         }

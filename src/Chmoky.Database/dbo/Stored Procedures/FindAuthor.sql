@@ -1,4 +1,5 @@
 ﻿
+
 -- =============================================
 -- Author:		P.Shyrko
 -- Create date: 2017-04-03
@@ -19,7 +20,6 @@ BEGIN
 		,a.[DispNames]
 		,[FirstName]
 		,[LastName]
-		,[DispName]
 		,[CompanyDepartment]
 		,[JobTitle]
 		,[Dismissed]
