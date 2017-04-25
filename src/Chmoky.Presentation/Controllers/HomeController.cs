@@ -77,15 +77,17 @@ namespace Chmoky.Presentation.Controllers
             {
                 var total = new ObjectParameter("Total", typeof(int));
                 var textLength = new ObjectParameter("TextLength", typeof(int));
+                var count = new ObjectParameter("Count", typeof(int));
                 var min = new ObjectParameter("Min", typeof(int));
                 var max = new ObjectParameter("Max", typeof(int));
                 var avg = new ObjectParameter("Avg", typeof(int));
 
                 var records = ctx.GetMessages(author, startDate, endDate, offset, limit, /*sort, order,*/
-                    total, textLength, min, max, avg).ToList();
+                    total, textLength, count, min, max, avg).ToList();
 
                 var model = new Models.MessageModel
                 {
+                    count = count.Value as int?,
                     textLength = textLength.Value as int?,
                     min = min.Value as int?,
                     max = max.Value as int?,

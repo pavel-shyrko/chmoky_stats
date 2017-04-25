@@ -49,6 +49,7 @@
           <Parameter Name="Limit" Type="int" Mode="In" />
           <Parameter Name="Total" Type="int" Mode="InOut" />
           <Parameter Name="TextLength" Type="int" Mode="InOut" />
+          <Parameter Name="Count" Type="int" Mode="InOut" />
           <Parameter Name="Min" Type="int" Mode="InOut" />
           <Parameter Name="Max" Type="int" Mode="InOut" />
           <Parameter Name="Avg" Type="int" Mode="InOut" />
@@ -78,18 +79,6 @@
         <EntityContainer Name="ChmokyEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Messages" EntityType="ChmokyModel.Message" />
           <EntitySet Name="SkypeUsers" EntityType="ChmokyModel.SkypeUser" />
-          <FunctionImport Name="GetMessages" ReturnType="Collection(ChmokyModel.GetMessages_Result)">
-            <Parameter Name="author" Mode="In" Type="String" />
-            <Parameter Name="startdate" Mode="In" Type="DateTime" />
-            <Parameter Name="enddate" Mode="In" Type="DateTime" />
-            <Parameter Name="OffSet" Mode="In" Type="Int32" />
-            <Parameter Name="Limit" Mode="In" Type="Int32" />
-            <Parameter Name="Total" Mode="InOut" Type="Int32" />
-            <Parameter Name="TextLength" Mode="InOut" Type="Int32" />
-            <Parameter Name="Min" Mode="InOut" Type="Int32" />
-            <Parameter Name="Max" Mode="InOut" Type="Int32" />
-            <Parameter Name="Avg" Mode="InOut" Type="Int32" />
-          </FunctionImport>
           <FunctionImport Name="GetStatistics" ReturnType="Collection(ChmokyModel.GetStatistics_Result)">
             <Parameter Name="startdate" Mode="In" Type="DateTime" />
             <Parameter Name="enddate" Mode="In" Type="DateTime" />
@@ -97,6 +86,19 @@
             <Parameter Name="Limit" Mode="In" Type="Int32" />
             <Parameter Name="SortColumn" Mode="In" Type="String" />
             <Parameter Name="SortDirection" Mode="In" Type="String" />
+            <Parameter Name="Total" Mode="InOut" Type="Int32" />
+            <Parameter Name="TextLength" Mode="InOut" Type="Int32" />
+            <Parameter Name="Count" Mode="InOut" Type="Int32" />
+            <Parameter Name="Min" Mode="InOut" Type="Int32" />
+            <Parameter Name="Max" Mode="InOut" Type="Int32" />
+            <Parameter Name="Avg" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetMessages" ReturnType="Collection(ChmokyModel.GetMessages_Result)">
+            <Parameter Name="author" Mode="In" Type="String" />
+            <Parameter Name="startdate" Mode="In" Type="DateTime" />
+            <Parameter Name="enddate" Mode="In" Type="DateTime" />
+            <Parameter Name="OffSet" Mode="In" Type="Int32" />
+            <Parameter Name="Limit" Mode="In" Type="Int32" />
             <Parameter Name="Total" Mode="InOut" Type="Int32" />
             <Parameter Name="TextLength" Mode="InOut" Type="Int32" />
             <Parameter Name="Count" Mode="InOut" Type="Int32" />
@@ -141,19 +143,6 @@
           <Property Name="ManagersName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="OfficeLocation" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
-        <ComplexType Name="GetMessages_Result">
-          <Property Type="Int64" Name="id" Nullable="false" />
-          <Property Type="String" Name="FirstName" Nullable="true" MaxLength="100" />
-          <Property Type="String" Name="LastName" Nullable="true" MaxLength="100" />
-          <Property Type="DateTime" Name="timestamp" Nullable="true" Precision="23" />
-          <Property Type="Int32" Name="type" Nullable="true" />
-          <Property Type="String" Name="identities" Nullable="true" MaxLength="256" />
-          <Property Type="Int64" Name="len_just_text" Nullable="true" />
-          <Property Type="String" Name="just_html_text" Nullable="true" />
-          <Property Type="Int32" Name="RowNum" Nullable="false" />
-          <Property Type="String" Name="author" Nullable="true" MaxLength="128" />
-          <Property Type="String" Name="DispName" Nullable="true" />
-        </ComplexType>
         <ComplexType Name="GetStatistics_Result">
           <Property Type="Int64" Name="RowNum" Nullable="true" />
           <Property Type="String" Name="FirstName" Nullable="true" MaxLength="100" />
@@ -165,6 +154,19 @@
           <Property Type="Int64" Name="min_just_text" Nullable="true" />
           <Property Type="Int64" Name="max_just_text" Nullable="true" />
           <Property Type="Int64" Name="avg_just_text" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetMessages_Result">
+          <Property Type="Int32" Name="RowNum" Nullable="false" />
+          <Property Type="Int64" Name="id" Nullable="false" />
+          <Property Type="String" Name="FirstName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="LastName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="author" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="DispName" Nullable="true" />
+          <Property Type="DateTime" Name="timestamp" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="type" Nullable="true" />
+          <Property Type="String" Name="identities" Nullable="true" MaxLength="256" />
+          <Property Type="String" Name="just_html_text" Nullable="true" />
+          <Property Type="Int64" Name="len_just_text" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -210,23 +212,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="GetMessages" FunctionName="ChmokyModel.Store.GetMessages">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="ChmokyModel.GetMessages_Result">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="timestamp" ColumnName="timestamp" />
-                <ScalarProperty Name="type" ColumnName="type" />
-                <ScalarProperty Name="identities" ColumnName="identities" />
-                <ScalarProperty Name="len_just_text" ColumnName="len_just_text" />
-                <ScalarProperty Name="just_html_text" ColumnName="just_html_text" />
-                <ScalarProperty Name="RowNum" ColumnName="RowNum" />
-                <ScalarProperty Name="author" ColumnName="author" />
-                <ScalarProperty Name="DispName" ColumnName="DispName" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GetStatistics" FunctionName="ChmokyModel.Store.GetStatistics" >
             <ResultMapping>
               <ComplexTypeMapping TypeName="ChmokyModel.GetStatistics_Result">
@@ -240,6 +225,23 @@
                 <ScalarProperty Name="min_just_text" ColumnName="min_just_text" />
                 <ScalarProperty Name="max_just_text" ColumnName="max_just_text" />
                 <ScalarProperty Name="avg_just_text" ColumnName="avg_just_text" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetMessages" FunctionName="ChmokyModel.Store.GetMessages">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ChmokyModel.GetMessages_Result">
+                <ScalarProperty Name="RowNum" ColumnName="RowNum" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="author" ColumnName="author" />
+                <ScalarProperty Name="DispName" ColumnName="DispName" />
+                <ScalarProperty Name="timestamp" ColumnName="timestamp" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="identities" ColumnName="identities" />
+                <ScalarProperty Name="just_html_text" ColumnName="just_html_text" />
+                <ScalarProperty Name="len_just_text" ColumnName="len_just_text" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

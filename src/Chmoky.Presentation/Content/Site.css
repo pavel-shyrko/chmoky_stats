@@ -27,3 +27,11 @@ a:hover {
     cursor: pointer;
     cursor: hand;
 }
+
+.toggleDisplay {
+    display: none;
+}
+
+.toggleDisplay.in {
+    display: table-cell;
+}

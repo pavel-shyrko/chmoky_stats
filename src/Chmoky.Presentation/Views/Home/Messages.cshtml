@@ -6,9 +6,9 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-6">
-            <h5>Participant: <span id="participant"></span></h5>
+            <h5 id="h5participants">Participant: <span id="participants"></span></h5>
             <h5>Messages Count: <span id="count"></span></h5>
-            <h5>Messages Length: <span id="total"></span></h5>
+            <h5>Messages Length: <span id="length"></span></h5>
         </div>
         <div class="col-lg-6">
             <h5>Min Message: <span id="min"></span></h5>
@@ -46,8 +46,8 @@
         <thead>
             <tr>
                 <th data-field="RowNum" data-halign="center">#</th>
-                <th data-field="FullName" data-halign="center">Person</th>
-                <th data-field="Author" data-formatter="authorFormatter" data-halign="center">Skype ID</th>
+                <th data-field="FullName" data-halign="center" class="toggleDisplay">Person</th>
+                <th data-field="Author" data-formatter="authorFormatter" data-halign="center" class="toggleDisplay">Skype ID</th>
                 <th data-field="timestamp" data-formatter="dateFormatter" data-sortable="true" data-halign="center" data-align="center">Time</th>
                 <th data-field="len_just_text" data-formatter="numberFormatter" data-sortable="true" data-align="right" data-halign="center">Len</th>
                 <th data-field="just_html_text" data-formatter="textFormatter" data-halign="center">Message</th>
@@ -96,6 +96,10 @@
                 if (params.author != undefined) {
                     author = 'author=' + params.author + '&';
                 }
+                else {
+                    // show columns Person and Skype ID
+                    $(".toggleDisplay").toggleClass("in");
+                }
                 var query = author
                     + 'month=' + params.currentDate.substring(0, 7)
                     + '&sortName=' + params.sortName
@@ -130,9 +134,15 @@
                     $('[data-toggle="popover"]').popover();
                 })
                 .on('load-success.bs.table', function (e, data) {
-                    //$('#participants').html(numberFormatter(data.total));
-                    $('#total').html(numberFormatter(data.textLength));
-                    $('#count').html(numberFormatter(data.total));
+                    if (data.total == 1) {
+                        $('#h5participants').html('Participant: ');
+                    }
+                    else if (data.total > 1) {
+                        $('#h5participants').html('Participants: ');
+                        $('#participants').html(numberFormatter(data.total));
+                    }
+                    $('#length').html(numberFormatter(data.textLength));
+                    $('#count').html(numberFormatter(data.count));
                     $('#min').html(numberFormatter(data.min));
                     $('#max').html(numberFormatter(data.max));
                     $('#avg').html(numberFormatter(data.avg));
@@ -154,7 +164,7 @@
 
             changeButtonsCaptions();
 
-            $messages.bootstrapTable('refresh', { url: "/Home/GetMessages" })
+            $messages.bootstrapTable('refresh', { url: "/Home/GetMessages" });
         });
     </script>
 }

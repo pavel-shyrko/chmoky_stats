@@ -3,6 +3,7 @@
 
 
 
+
 -- =============================================
 -- Author:		P.Shyrko
 -- Create date: 2017-03-31
@@ -15,6 +16,7 @@ CREATE PROCEDURE [dbo].[GetMessages]
 	@Limit int,
     @Total int out,
 	@TextLength int out,
+	@Count int out,
 	@Min int out,
 	@Max int out,
 	@Avg int out
@@ -28,15 +30,15 @@ BEGIN
 	-- please check this article https://sqlperformance.com/2012/08/t-sql-queries/conditional-order-by
 
 	SELECT
-		@Total = COUNT([id]),
+		@Total = COUNT([author]),
+		@Count = COUNT([ID]),
 		@TextLength	= SUM([len_just_text]),
 		@Min = MIN([len_just_text]),
 		@Max = MAX([len_just_text]),
 		@Avg = AVG([len_just_text])
-	FROM [dbo].[SkypeUsers] a 
-		INNER JOIN [dbo].[Messages] m ON a.[author] = m.[author]  
+	FROM [dbo].[Messages]
 	WHERE
-		(@author IS NULL OR a.[author] LIKE @author)
+		(@author IS NULL OR [author] LIKE @author)
 		AND (@startdate IS NULL OR [timestamp] >= @startdate)
 		AND (@enddate IS NULL OR [timestamp] <= @enddate)
 

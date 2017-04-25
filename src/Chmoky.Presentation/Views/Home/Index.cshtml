@@ -8,7 +8,7 @@
         <div class="col-lg-6">
             <h5>Participants: <span id="participants"></span></h5>
             <h5>Messages Count: <span id="count"></span></h5>
-            <h5>Messages Length: <span id="total"></span></h5>
+            <h5>Messages Length: <span id="length"></span></h5>
         </div>
         <div class="col-lg-6">
             <h5>Min Message: <span id="min"></span></h5>
@@ -117,7 +117,7 @@
                 })
                 .on('load-success.bs.table', function (e, data) {
                     $('#participants').html(numberFormatter(data.total));
-                    $('#total').html(numberFormatter(data.textLength));
+                    $('#length').html(numberFormatter(data.textLength));
                     $('#count').html(numberFormatter(data.count));
                     $('#min').html(numberFormatter(data.min));
                     $('#max').html(numberFormatter(data.max));
@@ -140,7 +140,7 @@
 
             changeButtonsCaptions();
 
-            $topGodel.bootstrapTable('refresh', { url: "/Home/GetTop" })
+            $topGodel.bootstrapTable('refresh', { url: "/Home/GetTop" });
         });
     </script>
 }

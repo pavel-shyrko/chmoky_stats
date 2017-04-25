@@ -1,4 +1,5 @@
 ﻿
+
 -- =============================================
 -- Author:		P.Shyrko
 -- Create date: 2017-03-31
@@ -93,12 +94,14 @@ BEGIN
 		WHERE
 			--[body_xml] IS NOT NULL 
 			--AND [body_xml] <> ''''
+			-- fake condition
+			(1 = 1)
 			'
 			
 			+
 			
 			CASE 
-				WHEN @startdate IS NOT NULL THEN '/*AND*/ ([timestamp] >= N''' + convert(varchar(25),@startdate,121) + ''')
+				WHEN @startdate IS NOT NULL THEN 'AND ([timestamp] >= N''' + convert(varchar(25),@startdate,121) + ''')
 			'
 				ELSE ''
 			END

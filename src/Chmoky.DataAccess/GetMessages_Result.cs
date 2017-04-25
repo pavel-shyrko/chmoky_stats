@@ -13,16 +13,16 @@ namespace Chmoky.DataAccess
     
     public partial class GetMessages_Result
     {
+        public int RowNum { get; set; }
         public long id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string author { get; set; }
+        public string DispName { get; set; }
         public Nullable<System.DateTime> timestamp { get; set; }
         public Nullable<int> type { get; set; }
         public string identities { get; set; }
-        public Nullable<long> len_just_text { get; set; }
         public string just_html_text { get; set; }
-        public int RowNum { get; set; }
-        public string author { get; set; }
-        public string DispName { get; set; }
+        public Nullable<long> len_just_text { get; set; }
     }
 }
