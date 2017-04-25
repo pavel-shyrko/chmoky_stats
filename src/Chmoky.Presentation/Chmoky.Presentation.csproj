@@ -354,6 +354,7 @@
     <Content Include="Scripts\bootstrap-table\locale\bootstrap-table-zh-TW.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\common.js" />
     <Content Include="Scripts\indexView.js" />
     <Content Include="Scripts\date.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
