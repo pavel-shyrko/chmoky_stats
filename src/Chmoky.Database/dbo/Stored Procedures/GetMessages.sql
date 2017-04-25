@@ -4,6 +4,8 @@
 
 
 
+
+
 -- =============================================
 -- Author:		P.Shyrko
 -- Create date: 2017-03-31
@@ -54,6 +56,8 @@ BEGIN
       ,[identities]
       ,[just_html_text]
       ,[len_just_text]
+	  ,edited_by
+	  ,body_xml
 	FROM [dbo].[Messages] m 
 	    INNER JOIN [dbo].[vAuthorNames] a ON m.[author] = a.[author]
 		LEFT OUTER JOIN [dbo].[SkypeUsers] s ON s.[author] = m.[author]  

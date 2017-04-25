@@ -188,6 +188,8 @@
           <Property Type="String" Name="identities" Nullable="true" MaxLength="256" />
           <Property Type="String" Name="just_html_text" Nullable="true" />
           <Property Type="Int64" Name="len_just_text" Nullable="true" />
+          <Property Type="String" Name="edited_by" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="body_xml" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -266,6 +268,8 @@
                 <ScalarProperty Name="identities" ColumnName="identities" />
                 <ScalarProperty Name="just_html_text" ColumnName="just_html_text" />
                 <ScalarProperty Name="len_just_text" ColumnName="len_just_text" />
+                <ScalarProperty Name="edited_by" ColumnName="edited_by" />
+                <ScalarProperty Name="body_xml" ColumnName="body_xml" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

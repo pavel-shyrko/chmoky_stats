@@ -26,7 +26,39 @@ namespace Chmoky.Presentation.Mappers
                 .ForMember(dest => dest.timestamp, opt => opt.MapFrom(src => src.timestamp.HasValue
                                 ? src.timestamp.Value.ToLocalTime()
                                 : (DateTime?)null))
-                .ForMember(dest => dest.text, opt => opt.MapFrom(src => src.just_html_text))
+                .ForMember(dest => dest.text, opt => opt.MapFrom(src =>
+                        // handle Skype types here
+
+                        // added another person(s) to the conversation
+                        src.type == 10 ? "<b>***  added  " + src.identities + "  ***<b/>" :
+
+                        // person left the conversation
+                        src.type == 13 ? "<b>***  has left  ***<b/>" :
+
+                        // removed another person from conversation
+                        src.type == 12 ? "<b>***  removed  " + src.identities + "  from this conversation ***<b/>" :
+
+                        // person deleted the messaged
+                        !string.IsNullOrEmpty(src.edited_by) && string.IsNullOrEmpty(src.body_xml) ? "<b>***  This message has been removed.  ***<b/>" :
+
+                        // person deleted the messaged
+                        src.type == 63 ? "<b>***  This message has been removed.  ***<b/>" :
+
+                        // doing something in the cinversation
+                        src.type == 60 ? "<b>***  " + src.just_html_text + "  ***<b/>" :
+
+                        // person sent Picture object
+                        src.type == 201 ? "<b>*** <i>[TBD: URIObject]</i>  Picture  ***<b/>" :
+
+                        // person sent Moji object
+                        src.type == 253 ? "<b>*** <i>[TBD: URIObject]</i>  Moji  ***<b/>" :
+
+                        // person sent File object
+                        src.type == 254 ? "<b>*** <i>[TBD: URIObject]</i>  File  ***<b/>" :
+
+                        // src.type == 61 just simaple text message 
+                        src.just_html_text
+                ))
                 .ForMember(dest => dest.len, opt => opt.MapFrom(src => src.len_just_text))
                 .ForMember(dest => dest.Author, opt => opt.MapFrom(src => new Models.AuthorModel
                 {

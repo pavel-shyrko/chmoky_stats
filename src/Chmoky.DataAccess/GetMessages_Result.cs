@@ -24,5 +24,7 @@ namespace Chmoky.DataAccess
         public string identities { get; set; }
         public string just_html_text { get; set; }
         public Nullable<long> len_just_text { get; set; }
+        public string edited_by { get; set; }
+        public string body_xml { get; set; }
     }
 }
