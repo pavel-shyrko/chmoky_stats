@@ -1,11 +1,4 @@
 ﻿
-
-
-
-
-
-
-
 -- =============================================
 -- Author:		P.Shyrko
 -- Create date: 2017-03-31
@@ -16,6 +9,8 @@ CREATE PROCEDURE [dbo].[GetMessages]
 	@enddate datetime,
 	@OffSet int,
 	@Limit int,
+	@SortColumn nvarchar(20),
+	@SortDirection nvarchar(10),
     @Participants int out,
 	@TextLength int out,
 	@Count int out,
@@ -44,8 +39,27 @@ BEGIN
 		AND (@startdate IS NULL OR [timestamp] >= @startdate)
 		AND (@enddate IS NULL OR [timestamp] <= @enddate)
 
+	DECLARE @orderBy nvarchar(max);
+
+	SET @orderBy = 'ORDER BY m.' 
+	
+	+ 
+	
+	CASE 
+		WHEN @SortColumn LIKE 'time' OR @SortColumn LIKE 'timestamp' THEN '[timestamp]'
+		WHEN @SortColumn LIKE 'len' OR @SortColumn LIKE 'len_just_text' THEN '[len_just_text]'
+		ELSE '[timestamp]'
+	END	
+	
+	+
+		
+	CASE WHEN @SortDirection LIKE 'desc' THEN ' DESC' ELSE ' ASC' END 
+
+	DECLARE @sql nvarchar(max);
+
+	SET @sql = N'
 	SELECT
-	   1000 AS [RowNum]
+		ROW_NUMBER() OVER(' + @orderBy + ') AS [RowNum]
 	  ,[id]
       ,s.[FirstName]
 	  ,s.[LastName]
@@ -62,11 +76,43 @@ BEGIN
 	    INNER JOIN [dbo].[vAuthorNames] a ON m.[author] = a.[author]
 		LEFT OUTER JOIN [dbo].[SkypeUsers] s ON s.[author] = m.[author]  
 	WHERE
-		(@author IS NULL OR a.[author] LIKE @author)
-		AND (@startdate IS NULL OR [timestamp] >= @startdate)
-		AND (@enddate IS NULL OR [timestamp] <= @enddate)
-	ORDER BY [timestamp]
-	OFFSET @OffSet ROWS
-	FETCH NEXT @Limit ROWS ONLY
+		-- fake condition
+		(1 = 1)
+		'
+		+
+			
+		CASE 
+			WHEN @author IS NOT NULL THEN 'AND (a.[author] LIKE N''' + @author + ''')
+		'
+			ELSE ''
+		END
+			
+		+
+			
+		CASE 
+			WHEN @startdate IS NOT NULL THEN 'AND ([timestamp] >= N''' + convert(varchar(25),@startdate,121) + ''')
+		'
+			ELSE ''
+		END
+			
+		+
+			
+		CASE 
+			WHEN @enddate IS NOT NULL THEN 'AND ([timestamp] < N''' + convert(varchar(25),@enddate,121) + ''')
+		'
+			ELSE ''
+		END
+	+ 
+	
+	@orderBy
+	
+	+ 
+	
+	'
+	OFFSET ' + CAST(@OffSet as varchar(15)) + ' ROWS
+	FETCH NEXT ' + CAST(@Limit as varchar(15)) + ' ROWS ONLY
+	';
+
+	EXECUTE sp_executesql @Sql;
 
 END

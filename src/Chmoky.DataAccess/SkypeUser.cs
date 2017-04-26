@@ -17,7 +17,6 @@ namespace Chmoky.DataAccess
         public string author { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string DispName { get; set; }
         public string CompanyDepartment { get; set; }
         public string JobTitle { get; set; }
         public Nullable<bool> Dismissed { get; set; }

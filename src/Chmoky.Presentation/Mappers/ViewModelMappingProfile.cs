@@ -27,6 +27,8 @@ namespace Chmoky.Presentation.Mappers
                                 ? src.timestamp.Value.ToLocalTime()
                                 : (DateTime?)null))
                 .ForMember(dest => dest.text, opt => opt.MapFrom(src =>
+
+                        // TBD to add type = 1
                         // handle Skype types here
 
                         // added another person(s) to the conversation
