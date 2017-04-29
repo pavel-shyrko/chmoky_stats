@@ -116,3 +116,8 @@ BEGIN
 	EXECUTE sp_executesql @Sql;
 
 END
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[GetMessages] TO PUBLIC
+    AS [dbo];
+

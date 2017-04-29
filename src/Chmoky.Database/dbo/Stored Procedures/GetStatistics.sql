@@ -1,6 +1,7 @@
 ﻿
 
 
+
 -- =============================================
 -- Author:		P.Shyrko
 -- Create date: 2017-03-31
@@ -127,3 +128,8 @@ BEGIN
 	EXECUTE sp_executesql @Sql;
 
 END
+GO
+GRANT EXECUTE
+    ON OBJECT::[dbo].[GetStatistics] TO PUBLIC
+    AS [dbo];
+
