@@ -14,18 +14,53 @@ namespace Chmoky.DataAccess
     
     public partial class Message
     {
+        public long MessageID { get; set; }
         public long id { get; set; }
+        public Nullable<int> is_permanent { get; set; }
+        public Nullable<int> convo_id { get; set; }
+        public string chatname { get; set; }
         public string author { get; set; }
         public string from_dispname { get; set; }
+        public Nullable<int> author_was_live { get; set; }
+        public string guid { get; set; }
+        public string dialog_partner { get; set; }
         public Nullable<System.DateTime> timestamp { get; set; }
+        public Nullable<int> type { get; set; }
+        public Nullable<int> sending_status { get; set; }
+        public Nullable<int> consumption_status { get; set; }
         public string edited_by { get; set; }
         public Nullable<System.DateTime> edited_timestamp { get; set; }
-        public Nullable<int> type { get; set; }
+        public Nullable<int> param_key { get; set; }
+        public Nullable<int> param_value { get; set; }
         public string body_xml { get; set; }
         public string identities { get; set; }
+        public string reason { get; set; }
+        public Nullable<int> leavereason { get; set; }
+        public Nullable<int> participant_count { get; set; }
+        public Nullable<int> error_code { get; set; }
+        public Nullable<int> chatmsg_type { get; set; }
+        public Nullable<int> chatmsg_status { get; set; }
+        public Nullable<int> body_is_rawxml { get; set; }
+        public Nullable<int> oldoptions { get; set; }
+        public Nullable<int> newoptions { get; set; }
+        public Nullable<int> newrole { get; set; }
+        public Nullable<long> pk_id { get; set; }
+        public Nullable<long> crc { get; set; }
+        public Nullable<long> remote_id { get; set; }
+        public string call_guid { get; set; }
+        public string extprop_contact_review_date { get; set; }
+        public Nullable<long> extprop_contact_received_stamp { get; set; }
+        public Nullable<long> extprop_contact_reviewed { get; set; }
+        public Nullable<int> option_bits { get; set; }
+        public Nullable<long> server_id { get; set; }
+        public Nullable<long> annotation_version { get; set; }
+        public Nullable<long> timestamp__ms { get; set; }
+        public string language { get; set; }
+        public string bots_settings { get; set; }
+        public string reaction_thread { get; set; }
+        public Nullable<int> content_flags { get; set; }
         public string just_text { get; set; }
         public Nullable<long> len_just_text { get; set; }
-        public Nullable<long> len_original { get; set; }
         public string just_html_text { get; set; }
     }
 }

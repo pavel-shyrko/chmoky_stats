@@ -28,8 +28,9 @@ namespace Chmoky.Presentation.Mappers
                                 : (DateTime?)null))
                 .ForMember(dest => dest.text, opt => opt.MapFrom(src =>
 
-                        // TBD to add type = 1
-                        // handle Skype types here
+                        //type 2, 4, 30, 39, 50, 51, 53, 100
+                        // type = 1
+                        src.type == 1 ? "<b>***  made changes to this conversation  ***<b/>" :
 
                         // added another person(s) to the conversation
                         src.type == 10 ? "<b>***  added  " + src.identities + "  ***<b/>" :

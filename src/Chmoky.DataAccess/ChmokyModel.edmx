@@ -7,20 +7,55 @@
     <Schema Namespace="ChmokyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Messages">
           <Key>
-            <PropertyRef Name="id" />
+            <PropertyRef Name="MessageID" />
           </Key>
+          <Property Name="MessageID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="id" Type="bigint" Nullable="false" />
+          <Property Name="is_permanent" Type="int" />
+          <Property Name="convo_id" Type="int" />
+          <Property Name="chatname" Type="nvarchar" MaxLength="256" />
           <Property Name="author" Type="nvarchar" MaxLength="128" />
           <Property Name="from_dispname" Type="nvarchar" MaxLength="256" />
+          <Property Name="author_was_live" Type="int" />
+          <Property Name="guid" Type="nvarchar" MaxLength="128" />
+          <Property Name="dialog_partner" Type="nvarchar" MaxLength="256" />
           <Property Name="timestamp" Type="datetime" />
-          <Property Name="edited_by" Type="nvarchar" MaxLength="128" />
-          <Property Name="edited_timestamp" Type="datetime" />
           <Property Name="type" Type="int" />
+          <Property Name="sending_status" Type="int" />
+          <Property Name="consumption_status" Type="int" />
+          <Property Name="edited_by" Type="nvarchar" MaxLength="256" />
+          <Property Name="edited_timestamp" Type="datetime" />
+          <Property Name="param_key" Type="int" />
+          <Property Name="param_value" Type="int" />
           <Property Name="body_xml" Type="nvarchar(max)" />
           <Property Name="identities" Type="nvarchar" MaxLength="256" />
+          <Property Name="reason" Type="nvarchar" MaxLength="256" />
+          <Property Name="leavereason" Type="int" />
+          <Property Name="participant_count" Type="int" />
+          <Property Name="error_code" Type="int" />
+          <Property Name="chatmsg_type" Type="int" />
+          <Property Name="chatmsg_status" Type="int" />
+          <Property Name="body_is_rawxml" Type="int" />
+          <Property Name="oldoptions" Type="int" />
+          <Property Name="newoptions" Type="int" />
+          <Property Name="newrole" Type="int" />
+          <Property Name="pk_id" Type="bigint" />
+          <Property Name="crc" Type="bigint" />
+          <Property Name="remote_id" Type="bigint" />
+          <Property Name="call_guid" Type="nvarchar" MaxLength="256" />
+          <Property Name="extprop_contact_review_date" Type="nvarchar" MaxLength="256" />
+          <Property Name="extprop_contact_received_stamp" Type="bigint" />
+          <Property Name="extprop_contact_reviewed" Type="bigint" />
+          <Property Name="option_bits" Type="int" />
+          <Property Name="server_id" Type="bigint" />
+          <Property Name="annotation_version" Type="bigint" />
+          <Property Name="timestamp__ms" Type="bigint" />
+          <Property Name="language" Type="nvarchar" MaxLength="256" />
+          <Property Name="bots_settings" Type="nvarchar" MaxLength="256" />
+          <Property Name="reaction_thread" Type="nvarchar" MaxLength="256" />
+          <Property Name="content_flags" Type="int" />
           <Property Name="just_text" Type="nvarchar(max)" StoreGeneratedPattern="Computed" />
           <Property Name="len_just_text" Type="bigint" StoreGeneratedPattern="Computed" />
-          <Property Name="len_original" Type="bigint" StoreGeneratedPattern="Computed" />
           <Property Name="just_html_text" Type="nvarchar(max)" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="SkypeUsers">
@@ -81,7 +116,6 @@
     <edmx:ConceptualModels>
       <Schema Namespace="ChmokyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="ChmokyEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Messages" EntityType="ChmokyModel.Message" />
           <EntitySet Name="SkypeUsers" EntityType="ChmokyModel.SkypeUser" />
           <FunctionImport Name="FindAuthor" ReturnType="Collection(ChmokyModel.FindAuthor_Result)">
           <Parameter Name="author" Mode="In" Type="String" />
@@ -115,25 +149,8 @@
             <Parameter Name="Max" Mode="InOut" Type="Int32" />
             <Parameter Name="Avg" Mode="InOut" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="Messages" EntityType="ChmokyModel.Message" />
         </EntityContainer>
-        <EntityType Name="Message">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int64" Nullable="false" />
-          <Property Name="author" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="from_dispname" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-          <Property Name="timestamp" Type="DateTime" Precision="3" />
-          <Property Name="edited_by" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="edited_timestamp" Type="DateTime" Precision="3" />
-          <Property Name="type" Type="Int32" />
-          <Property Name="body_xml" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="identities" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-          <Property Name="just_text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" annotation:StoreGeneratedPattern="Computed" />
-          <Property Name="len_just_text" Type="Int64" annotation:StoreGeneratedPattern="Computed" />
-          <Property Name="len_original" Type="Int64" annotation:StoreGeneratedPattern="Computed" />
-          <Property Name="just_html_text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" annotation:StoreGeneratedPattern="Computed" />
-        </EntityType>
         <EntityType Name="SkypeUser">
           <Key>
             <PropertyRef Name="author" />
@@ -193,31 +210,65 @@
           <Property Type="String" Name="edited_by" Nullable="true" MaxLength="128" />
           <Property Type="String" Name="body_xml" Nullable="true" />
         </ComplexType>
+        <EntityType Name="Message">
+          <Key>
+            <PropertyRef Name="MessageID" />
+          </Key>
+          <Property Name="MessageID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="Int64" Nullable="false" />
+          <Property Name="is_permanent" Type="Int32" />
+          <Property Name="convo_id" Type="Int32" />
+          <Property Name="chatname" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="author" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="from_dispname" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="author_was_live" Type="Int32" />
+          <Property Name="guid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="dialog_partner" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="timestamp" Type="DateTime" Precision="3" />
+          <Property Name="type" Type="Int32" />
+          <Property Name="sending_status" Type="Int32" />
+          <Property Name="consumption_status" Type="Int32" />
+          <Property Name="edited_by" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="edited_timestamp" Type="DateTime" Precision="3" />
+          <Property Name="param_key" Type="Int32" />
+          <Property Name="param_value" Type="Int32" />
+          <Property Name="body_xml" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="identities" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="reason" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="leavereason" Type="Int32" />
+          <Property Name="participant_count" Type="Int32" />
+          <Property Name="error_code" Type="Int32" />
+          <Property Name="chatmsg_type" Type="Int32" />
+          <Property Name="chatmsg_status" Type="Int32" />
+          <Property Name="body_is_rawxml" Type="Int32" />
+          <Property Name="oldoptions" Type="Int32" />
+          <Property Name="newoptions" Type="Int32" />
+          <Property Name="newrole" Type="Int32" />
+          <Property Name="pk_id" Type="Int64" />
+          <Property Name="crc" Type="Int64" />
+          <Property Name="remote_id" Type="Int64" />
+          <Property Name="call_guid" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="extprop_contact_review_date" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="extprop_contact_received_stamp" Type="Int64" />
+          <Property Name="extprop_contact_reviewed" Type="Int64" />
+          <Property Name="option_bits" Type="Int32" />
+          <Property Name="server_id" Type="Int64" />
+          <Property Name="annotation_version" Type="Int64" />
+          <Property Name="timestamp__ms" Type="Int64" />
+          <Property Name="language" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="bots_settings" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="reaction_thread" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="content_flags" Type="Int32" />
+          <Property Name="just_text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="len_just_text" Type="Int64" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="just_html_text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" annotation:StoreGeneratedPattern="Computed" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="ChmokyModelStoreContainer" CdmEntityContainer="ChmokyEntities">
-          <EntitySetMapping Name="Messages">
-            <EntityTypeMapping TypeName="ChmokyModel.Message">
-              <MappingFragment StoreEntitySet="Messages">
-                <ScalarProperty Name="just_html_text" ColumnName="just_html_text" />
-                <ScalarProperty Name="len_original" ColumnName="len_original" />
-                <ScalarProperty Name="len_just_text" ColumnName="len_just_text" />
-                <ScalarProperty Name="just_text" ColumnName="just_text" />
-                <ScalarProperty Name="identities" ColumnName="identities" />
-                <ScalarProperty Name="body_xml" ColumnName="body_xml" />
-                <ScalarProperty Name="type" ColumnName="type" />
-                <ScalarProperty Name="edited_timestamp" ColumnName="edited_timestamp" />
-                <ScalarProperty Name="edited_by" ColumnName="edited_by" />
-                <ScalarProperty Name="timestamp" ColumnName="timestamp" />
-                <ScalarProperty Name="from_dispname" ColumnName="from_dispname" />
-                <ScalarProperty Name="author" ColumnName="author" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="SkypeUsers">
             <EntityTypeMapping TypeName="ChmokyModel.SkypeUser">
               <MappingFragment StoreEntitySet="SkypeUsers">
@@ -290,6 +341,60 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="Messages">
+            <EntityTypeMapping TypeName="ChmokyModel.Message">
+              <MappingFragment StoreEntitySet="Messages">
+                <ScalarProperty Name="just_html_text" ColumnName="just_html_text" />
+                <ScalarProperty Name="len_just_text" ColumnName="len_just_text" />
+                <ScalarProperty Name="just_text" ColumnName="just_text" />
+                <ScalarProperty Name="content_flags" ColumnName="content_flags" />
+                <ScalarProperty Name="reaction_thread" ColumnName="reaction_thread" />
+                <ScalarProperty Name="bots_settings" ColumnName="bots_settings" />
+                <ScalarProperty Name="language" ColumnName="language" />
+                <ScalarProperty Name="timestamp__ms" ColumnName="timestamp__ms" />
+                <ScalarProperty Name="annotation_version" ColumnName="annotation_version" />
+                <ScalarProperty Name="server_id" ColumnName="server_id" />
+                <ScalarProperty Name="option_bits" ColumnName="option_bits" />
+                <ScalarProperty Name="extprop_contact_reviewed" ColumnName="extprop_contact_reviewed" />
+                <ScalarProperty Name="extprop_contact_received_stamp" ColumnName="extprop_contact_received_stamp" />
+                <ScalarProperty Name="extprop_contact_review_date" ColumnName="extprop_contact_review_date" />
+                <ScalarProperty Name="call_guid" ColumnName="call_guid" />
+                <ScalarProperty Name="remote_id" ColumnName="remote_id" />
+                <ScalarProperty Name="crc" ColumnName="crc" />
+                <ScalarProperty Name="pk_id" ColumnName="pk_id" />
+                <ScalarProperty Name="newrole" ColumnName="newrole" />
+                <ScalarProperty Name="newoptions" ColumnName="newoptions" />
+                <ScalarProperty Name="oldoptions" ColumnName="oldoptions" />
+                <ScalarProperty Name="body_is_rawxml" ColumnName="body_is_rawxml" />
+                <ScalarProperty Name="chatmsg_status" ColumnName="chatmsg_status" />
+                <ScalarProperty Name="chatmsg_type" ColumnName="chatmsg_type" />
+                <ScalarProperty Name="error_code" ColumnName="error_code" />
+                <ScalarProperty Name="participant_count" ColumnName="participant_count" />
+                <ScalarProperty Name="leavereason" ColumnName="leavereason" />
+                <ScalarProperty Name="reason" ColumnName="reason" />
+                <ScalarProperty Name="identities" ColumnName="identities" />
+                <ScalarProperty Name="body_xml" ColumnName="body_xml" />
+                <ScalarProperty Name="param_value" ColumnName="param_value" />
+                <ScalarProperty Name="param_key" ColumnName="param_key" />
+                <ScalarProperty Name="edited_timestamp" ColumnName="edited_timestamp" />
+                <ScalarProperty Name="edited_by" ColumnName="edited_by" />
+                <ScalarProperty Name="consumption_status" ColumnName="consumption_status" />
+                <ScalarProperty Name="sending_status" ColumnName="sending_status" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="timestamp" ColumnName="timestamp" />
+                <ScalarProperty Name="dialog_partner" ColumnName="dialog_partner" />
+                <ScalarProperty Name="guid" ColumnName="guid" />
+                <ScalarProperty Name="author_was_live" ColumnName="author_was_live" />
+                <ScalarProperty Name="from_dispname" ColumnName="from_dispname" />
+                <ScalarProperty Name="author" ColumnName="author" />
+                <ScalarProperty Name="chatname" ColumnName="chatname" />
+                <ScalarProperty Name="convo_id" ColumnName="convo_id" />
+                <ScalarProperty Name="is_permanent" ColumnName="is_permanent" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="MessageID" ColumnName="MessageID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

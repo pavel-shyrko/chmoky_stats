@@ -27,8 +27,8 @@ namespace Chmoky.DataAccess
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Message> Messages { get; set; }
         public virtual DbSet<SkypeUser> SkypeUsers { get; set; }
+        public virtual DbSet<Message> Messages { get; set; }
     
         public virtual ObjectResult<FindAuthor_Result> FindAuthor(string author)
         {

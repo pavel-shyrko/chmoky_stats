@@ -80,7 +80,6 @@
     <Build Include="dbo\Views\vAuthorNames.sql" />
     <Build Include="dbo\Views\vNormalizedMessages.sql" />
     <Build Include="Storage\MessagesCat.sql" />
-    <Build Include="FullTextIndexes.sql" />
     <Build Include="dbo\Functions\RemoveTagKeepInnerText.sql" />
     <Build Include="dbo\Functions\RemoveTag.sql" />
     <Build Include="dbo\Functions\HasTag.sql" />
