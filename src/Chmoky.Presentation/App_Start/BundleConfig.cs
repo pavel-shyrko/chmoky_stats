@@ -38,6 +38,12 @@ namespace Chmoky.Presentation
                         "~/Scripts/common.js",
                         "~/Scripts/indexView.js"
                         ));
+
+            bundles.Add(new ScriptBundle("~/bundles/messages").Include(
+                        "~/Scripts/date.js",
+                        "~/Scripts/common.js",
+                        "~/Scripts/messages.js"
+                        ));
         }
     }
 }
