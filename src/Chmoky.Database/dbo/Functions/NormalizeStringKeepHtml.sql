@@ -3,6 +3,7 @@
 
 
 
+
 ---------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------
@@ -20,6 +21,11 @@ BEGIN
 	WHILE ([dbo].[HasTag](@Result, N'URIObject') = 1)
 	BEGIN
 		SET @Result = [dbo].[RemoveTag](@Result, N'URIObject')
+	END
+
+	WHILE ([dbo].[HasTag](@Result, N'MediaAlbum') = 1)
+	BEGIN
+		SET @Result = [dbo].[RemoveTag](@Result, N'MediaAlbum')
 	END
 
 	-- smiles
@@ -43,9 +49,13 @@ BEGIN
 
 	SET @Result = REPLACE(@Result, N'</s>', N'</strike>');
 
-	--SET @Result = REPLACE(@Result, N'&lt;&lt;&lt;', N'<br /><br />&lt;&lt;&lt;')
-
 	SET @Result = REPLACE(@Result,  CHAR(13) + CHAR(10), N'<br />')
+
+	SET @Result = REPLACE(@Result,  CHAR(10) + CHAR(13), N'<br />')
+
+	SET @Result = REPLACE(@Result,  CHAR(13), N'<br />')
+
+	SET @Result = REPLACE(@Result,  CHAR(10), N'<br />')
 	
 	RETURN @Result;
 

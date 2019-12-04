@@ -17,14 +17,7 @@ namespace Chmoky.DataAccess
         public string author { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string CompanyDepartment { get; set; }
-        public string JobTitle { get; set; }
-        public Nullable<bool> Dismissed { get; set; }
-        public string City { get; set; }
-        public string Country { get; set; }
         public string Account { get; set; }
         public string EmailDisplayName { get; set; }
-        public string ManagersName { get; set; }
-        public string OfficeLocation { get; set; }
     }
 }

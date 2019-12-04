@@ -1,4 +1,8 @@
 ﻿
+
+
+
+
 -- =============================================
 -- Author:		P.Shyrko
 -- Create date: 2017-03-31
@@ -36,6 +40,7 @@ BEGIN
 	FROM [dbo].[Messages]
 	WHERE
 		(@author IS NULL OR [author] LIKE @author)
+		AND [author] <> '19:I2tvbXB1dGVyb2ZmLyRjNDY3ZTkzYTNlNDU2MGVk@p2p.thread.skype'
 		AND (@startdate IS NULL OR [timestamp] >= @startdate)
 		AND (@enddate IS NULL OR [timestamp] <= @enddate)
 
@@ -60,24 +65,23 @@ BEGIN
 	SET @sql = N'
 	SELECT
 		ROW_NUMBER() OVER(' + @orderBy + ') AS [RowNum]
-	  ,[id]
+	  ,m.[id]
       ,s.[FirstName]
 	  ,s.[LastName]
 	  ,m.[author] 
 	  ,a.[DispNames] AS [DispName]	  
-      ,[timestamp]    
-      ,[type]
-      ,[identities]
-      ,[just_html_text]
-      ,[len_just_text]
-	  ,edited_by
-	  ,body_xml
+      ,m.[timestamp]    
+      ,m.[type]
+      ,m.[identities]
+      ,m.[just_html_text]
+      ,m.[len_just_text]
+	  ,m.[edited_by]
+	  ,m.[body_xml]
 	FROM [dbo].[Messages] m 
 	    INNER JOIN [dbo].[vAuthorNames] a ON m.[author] = a.[author]
 		LEFT OUTER JOIN [dbo].[SkypeUsers] s ON s.[author] = m.[author]  
 	WHERE
-		-- fake condition
-		(1 = 1)
+		(m.[author] <> ''19:I2tvbXB1dGVyb2ZmLyRjNDY3ZTkzYTNlNDU2MGVk@p2p.thread.skype'')
 		'
 		+
 			
@@ -117,7 +121,5 @@ BEGIN
 
 END
 GO
-GRANT EXECUTE
-    ON OBJECT::[dbo].[GetMessages] TO PUBLIC
-    AS [dbo];
+
 

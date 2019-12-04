@@ -11,6 +11,6 @@ Post-Deployment Script Template
 */
 
 
-:r .\PostDeployment\TimeZoneInfo.sql
+--:r .\PostDeployment\TimeZoneInfo.sql
 
 

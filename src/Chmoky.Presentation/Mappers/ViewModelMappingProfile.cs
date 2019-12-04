@@ -51,13 +51,23 @@ namespace Chmoky.Presentation.Mappers
                         src.type == 60 ? "<b>***  " + src.just_html_text + "  ***<b/>" :
 
                         // person sent Picture object
-                        src.type == 201 ? "<b>*** <i>[TBD: URIObject]</i>  Picture  ***<b/>" :
-
+                        src.type == 201 ||
                         // person sent Moji object
-                        src.type == 253 ? "<b>*** <i>[TBD: URIObject]</i>  Moji  ***<b/>" :
-
+                        src.type == 253 ||
                         // person sent File object
-                        src.type == 254 ? "<b>*** <i>[TBD: URIObject]</i>  File  ***<b/>" :
+                        src.type == 254
+                        ? "<b>*** <i>[TBD: URIObject]</i>  File / Moji / Picture  ***<b/>" :
+
+                        //// person sent Moji object
+                        //src.type == 253 ? "<b>*** <i>[TBD: URIObject]</i>  Moji  ***<b/>" :
+
+                        //// person sent File object
+                        //src.type == 254 ? "<b>*** <i>[TBD: URIObject]</i>  File  ***<b/>" :
+
+                        // new Skype 8
+                        src.body_xml.StartsWith("<MediaAlbum") ? "<b>*** <i>[TBD: MediaAlbum]</i> Multiple images  ***<b/>" :
+
+                        src.body_xml.StartsWith("<URIObject") ? "<b>*** <i>[TBD: URIObject]</i>  File / Moji / Picture  ***<b/>" :
 
                         // src.type == 61 just simaple text message 
                         src.just_html_text

@@ -62,18 +62,14 @@
     <Folder Include="dbo\Functions\" />
     <Folder Include="dbo\Stored Procedures\" />
     <Folder Include="Scripts" />
-    <Folder Include="Scripts\PostDeployment" />
     <Folder Include="Scripts\Skype" />
     <Folder Include="dbo\Views\" />
     <Folder Include="Storage\" />
+    <Folder Include="Security\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Messages.sql" />
-    <Build Include="dbo\Functions\GetLocalDateTime.sql" />
-    <Build Include="dbo\Functions\GetDaylightStandardDateTime.sql" />
-    <None Include="Scripts\PostDeployment\TimeZoneInfo.sql" />
     <PostDeploy Include="Scripts\PostDeployment.sql" />
-    <Build Include="dbo\Tables\TimeZoneInfo.sql" />
     <None Include="Scripts\Skype\SelectRecordsForInsert.sql" />
     <Build Include="dbo\Views\vAuthors.sql" />
     <Build Include="dbo\Views\vAuthorDisplayNames.sql" />
@@ -85,10 +81,10 @@
     <Build Include="dbo\Functions\HasTag.sql" />
     <Build Include="dbo\Functions\NormalizeString.sql" />
     <Build Include="dbo\Tables\SkypeUsers.sql" />
-    <Build Include="dbo\Tables\OutlookUsers.sql" />
     <Build Include="dbo\Stored Procedures\FindAuthor.sql" />
     <Build Include="dbo\Stored Procedures\GetStatistics.sql" />
     <Build Include="dbo\Stored Procedures\GetMessages.sql" />
     <Build Include="dbo\Functions\NormalizeStringKeepHtml.sql" />
+    <Build Include="Security\gehero.sql" />
   </ItemGroup>
 </Project>

@@ -1,7 +1,5 @@
 ﻿
 
-
-
 -- =============================================
 -- Author:		P.Shyrko
 -- Create date: 2017-03-31
@@ -39,6 +37,7 @@ BEGIN
 	WHERE
 		--[body_xml] IS NOT NULL AND
 		--[body_xml] <> '' AND
+		([author] <> '19:I2tvbXB1dGVyb2ZmLyRjNDY3ZTkzYTNlNDU2MGVk@p2p.thread.skype') AND
 		(@startdate IS NULL OR [timestamp] >= @startdate) AND
 		(@enddate IS NULL OR [timestamp] < @enddate)
 
@@ -87,8 +86,7 @@ BEGIN
 		WHERE
 			--[body_xml] IS NOT NULL 
 			--AND [body_xml] <> ''''
-			-- fake condition
-			(1 = 1)
+			(m.[author] <> ''19:I2tvbXB1dGVyb2ZmLyRjNDY3ZTkzYTNlNDU2MGVk@p2p.thread.skype'')
 			'
 			
 			+
@@ -129,7 +127,5 @@ BEGIN
 
 END
 GO
-GRANT EXECUTE
-    ON OBJECT::[dbo].[GetStatistics] TO PUBLIC
-    AS [dbo];
+
 

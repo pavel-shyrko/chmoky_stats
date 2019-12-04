@@ -20,15 +20,8 @@ BEGIN
 		,a.[DispNames]
 		,[FirstName]
 		,[LastName]
-		,[CompanyDepartment]
-		,[JobTitle]
-		,[Dismissed]
-		,[City]
-		,[Country]
 		,[Account]
 		,[EmailDisplayName]
-		,[ManagersName]
-		,[OfficeLocation]
 	FROM
 		[dbo].[vAuthorNames] a
 		LEFT OUTER JOIN [dbo].[SkypeUsers] s ON a.[author] = s.[author] 
